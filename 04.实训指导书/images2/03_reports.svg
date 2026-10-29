@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect x="0" y="0" width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- 顶部栏 -->
+  <rect x="0" y="0" width="1440" height="56" fill="#FFFFFF"/>
+  <line x1="0" y1="56" x2="1440" y2="56" stroke="#D9DEE7"/>
+  <rect x="20" y="16" width="24" height="24" rx="6" fill="#1D4ED8"/>
+  <text x="54" y="34" font-family="SimHei" font-size="18" fill="#1F2937">智电析报</text>
+  <text x="140" y="34" font-family="SimHei" font-size="12" fill="#6B7280">基于LLM的能源电力报表智能分析Agent</text>
+  <text x="700" y="34" font-family="SimHei" font-size="12" fill="#6B7280">对话工作台</text>
+  <text x="800" y="34" font-family="SimHei" font-size="12" fill="#1D4ED8">报表管理</text>
+  <text x="888" y="34" font-family="SimHei" font-size="12" fill="#6B7280">评测中心</text>
+  <text x="976" y="34" font-family="SimHei" font-size="12" fill="#6B7280">个人中心</text>
+  <circle cx="1120" cy="28" r="11" fill="#E8EFFD" stroke="#1D4ED8"/>
+  <text x="1116" y="32" font-family="SimHei" font-size="11" fill="#1D4ED8">陈</text>
+  <text x="1142" y="33" font-family="SimHei" font-size="12" fill="#1F2937">能耗管理员</text>
+
+  <!-- 左栏 -->
+  <rect x="0" y="56" width="240" height="844" fill="#FFFFFF"/>
+  <line x1="240" y1="56" x2="240" y2="900" stroke="#D9DEE7"/>
+  <rect x="16" y="76" width="208" height="36" rx="8" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="76" y="99" font-family="SimHei" font-size="13" fill="#1F2937">← 返回对话工作台</text>
+  <text x="16" y="152" font-family="SimHei" font-size="12" fill="#6B7280">报表列表</text>
+  <rect x="8" y="164" width="224" height="34" rx="6" fill="#E8EFFD"/>
+  <text x="20" y="186" font-family="SimHei" font-size="12" fill="#1D4ED8">report_daily（日报）</text>
+  <rect x="8" y="206" width="224" height="34" rx="6" fill="#FFFFFF"/>
+  <text x="20" y="228" font-family="SimHei" font-size="12" fill="#1F2937">report_monthly（月报）</text>
+  <rect x="8" y="248" width="224" height="34" rx="6" fill="#FFFFFF"/>
+  <text x="20" y="270" font-family="SimHei" font-size="12" fill="#1F2937">report_hourly（小时报）</text>
+  <rect x="8" y="290" width="224" height="34" rx="6" fill="#FFFFFF"/>
+  <text x="20" y="312" font-family="SimHei" font-size="12" fill="#1F2937">report_minute（明细）</text>
+  <rect x="8" y="332" width="224" height="34" rx="6" fill="#FFFFFF"/>
+  <text x="20" y="354" font-family="SimHei" font-size="12" fill="#1F2937">report_energy_structure</text>
+
+  <!-- 主体 -->
+  <text x="272" y="96" font-family="SimHei" font-size="20" fill="#1F2937">报表管理</text>
+  <text x="272" y="120" font-family="SimHei" font-size="12" fill="#6B7280">上传 CSV 报表、查看数据质量与 Schema 描述、切换分析对象</text>
+
+  <!-- 上传区 -->
+  <rect x="272" y="140" width="1128" height="132" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <rect x="296" y="160" width="1080" height="92" rx="8" fill="#FBFCFD" stroke="#1D4ED8" stroke-dasharray="6 4"/>
+  <text x="760" y="196" font-family="SimHei" font-size="14" fill="#1F2937">把 CSV / TXT 报表拖到这里，或点击选择文件</text>
+  <text x="700" y="222" font-family="SimHei" font-size="11" fill="#6B7280">支持 .csv / .txt（分号分隔）· 单文件 ≤ 200MB · UTF-8 / GBK 自动识别 · 需含时间列</text>
+  <text x="740" y="242" font-family="SimHei" font-size="11" fill="#1D4ED8">上传后进入「预览确认」步骤：校验字段 → 查看质量报告 → 确认入库</text>
+
+  <circle cx="1392" cy="152" r="11" fill="#E03131"/>
+  <text x="1388" y="157" font-family="SimHei" font-size="12" fill="#FFFFFF">1</text>
+
+  <!-- 报表表格 -->
+  <rect x="272" y="292" width="740" height="330" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="320" font-family="SimHei" font-size="14" fill="#1F2937">报表列表</text>
+  <rect x="292" y="334" width="700" height="30" fill="#F1F3F5"/>
+  <text x="302" y="354" font-family="SimHei" font-size="11" fill="#6B7280">报表名（类型）</text>
+  <text x="520" y="354" font-family="SimHei" font-size="11" fill="#6B7280">数据时间范围</text>
+  <text x="668" y="354" font-family="SimHei" font-size="11" fill="#6B7280">行数</text>
+  <text x="726" y="354" font-family="SimHei" font-size="11" fill="#6B7280">上传时间</text>
+  <text x="825" y="354" font-family="SimHei" font-size="11" fill="#6B7280">状态</text>
+  <text x="880" y="354" font-family="SimHei" font-size="11" fill="#6B7280">操作</text>
+
+  <text x="302" y="388" font-family="SimHei" font-size="11" fill="#1F2937">report_daily（日报）</text>
+  <text x="520" y="388" font-family="SimHei" font-size="11" fill="#1F2937">2006-12-16~2010-11-26</text>
+  <text x="668" y="388" font-family="SimHei" font-size="11" fill="#1F2937">1,442</text>
+  <text x="726" y="388" font-family="SimHei" font-size="11" fill="#6B7280">系统预置</text>
+  <text x="825" y="388" font-family="SimHei" font-size="11" fill="#0CA678">就绪</text>
+  <text x="880" y="388" font-family="SimHei" font-size="11" fill="#1D4ED8">预览 质量 Schema 切换 删除</text>
+  <line x1="292" y1="400" x2="992" y2="400" stroke="#EEF1F5"/>
+
+  <text x="302" y="424" font-family="SimHei" font-size="11" fill="#1F2937">report_monthly（月报）</text>
+  <text x="520" y="424" font-family="SimHei" font-size="11" fill="#1F2937">2006-12~2010-11</text>
+  <text x="668" y="424" font-family="SimHei" font-size="11" fill="#1F2937">48</text>
+  <text x="726" y="424" font-family="SimHei" font-size="11" fill="#6B7280">系统预置</text>
+  <text x="825" y="424" font-family="SimHei" font-size="11" fill="#0CA678">就绪</text>
+  <text x="880" y="424" font-family="SimHei" font-size="11" fill="#1D4ED8">预览 质量 Schema 切换 删除</text>
+  <line x1="292" y1="436" x2="992" y2="436" stroke="#EEF1F5"/>
+
+  <text x="302" y="460" font-family="SimHei" font-size="11" fill="#1F2937">report_hourly（小时报）</text>
+  <text x="520" y="460" font-family="SimHei" font-size="11" fill="#1F2937">2006-12-16~2010-11-26</text>
+  <text x="668" y="460" font-family="SimHei" font-size="11" fill="#1F2937">34,588</text>
+  <text x="726" y="460" font-family="SimHei" font-size="11" fill="#6B7280">系统预置</text>
+  <text x="825" y="460" font-family="SimHei" font-size="11" fill="#0CA678">就绪</text>
+  <text x="880" y="460" font-family="SimHei" font-size="11" fill="#1D4ED8">预览 质量 Schema 切换 删除</text>
+  <line x1="292" y1="472" x2="992" y2="472" stroke="#EEF1F5"/>
+
+  <text x="302" y="496" font-family="SimHei" font-size="11" fill="#1F2937">report_minute（明细）</text>
+  <text x="520" y="496" font-family="SimHei" font-size="11" fill="#1F2937">2006-12-16~2010-11-26</text>
+  <text x="668" y="496" font-family="SimHei" font-size="11" fill="#1F2937">2,075,259</text>
+  <text x="726" y="496" font-family="SimHei" font-size="11" fill="#6B7280">系统预置</text>
+  <text x="825" y="496" font-family="SimHei" font-size="11" fill="#0CA678">就绪</text>
+  <text x="880" y="496" font-family="SimHei" font-size="11" fill="#1D4ED8">预览 质量 Schema 切换 删除</text>
+  <line x1="292" y1="508" x2="992" y2="508" stroke="#EEF1F5"/>
+
+  <text x="302" y="532" font-family="SimHei" font-size="11" fill="#1F2937">report_energy_structure（结构）</text>
+  <text x="520" y="532" font-family="SimHei" font-size="11" fill="#1F2937">2006~2010 及全期</text>
+  <text x="668" y="532" font-family="SimHei" font-size="11" fill="#1F2937">6</text>
+  <text x="726" y="532" font-family="SimHei" font-size="11" fill="#6B7280">系统预置</text>
+  <text x="825" y="532" font-family="SimHei" font-size="11" fill="#0CA678">就绪</text>
+  <text x="880" y="532" font-family="SimHei" font-size="11" fill="#1D4ED8">预览 质量 Schema 切换 删除</text>
+  <line x1="292" y1="544" x2="992" y2="544" stroke="#EEF1F5"/>
+
+  <text x="302" y="568" font-family="SimHei" font-size="11" fill="#1F2937">我的用电报表.csv（上传）</text>
+  <text x="520" y="568" font-family="SimHei" font-size="11" fill="#1F2937">2021 全年</text>
+  <text x="668" y="568" font-family="SimHei" font-size="11" fill="#1F2937">365</text>
+  <text x="726" y="568" font-family="SimHei" font-size="11" fill="#1F2937">09-15 10:12</text>
+  <text x="825" y="568" font-family="SimHei" font-size="11" fill="#0CA678">就绪</text>
+  <text x="880" y="568" font-family="SimHei" font-size="11" fill="#1D4ED8">预览 质量 Schema 切换 删除</text>
+
+  <text x="292" y="602" font-family="SimHei" font-size="11" fill="#6B7280">共 6 张报表（预置 5 张 + 用户上传 1 张）· 当前活跃：report_daily · 列表/切换 ≤1s（N5）</text>
+
+  <circle cx="1000" cy="302" r="11" fill="#E03131"/>
+  <text x="996" y="307" font-family="SimHei" font-size="12" fill="#FFFFFF">2</text>
+
+  <!-- 质量报告卡片 -->
+  <rect x="1032" y="292" width="368" height="150" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="1052" y="320" font-family="SimHei" font-size="14" fill="#1F2937">数据质量报告</text>
+  <rect x="1052" y="334" width="160" height="60" rx="6" fill="#F8FAFC" stroke="#D9DEE7"/>
+  <text x="1064" y="354" font-family="SimHei" font-size="11" fill="#6B7280">缺失行数</text>
+  <text x="1064" y="380" font-family="SimHei" font-size="17" fill="#1F2937">25,979</text>
+  <text x="1160" y="380" font-family="SimHei" font-size="11" fill="#E8590C">1.25%</text>
+
+  <rect x="1224" y="334" width="160" height="60" rx="6" fill="#F8FAFC" stroke="#D9DEE7"/>
+  <text x="1236" y="354" font-family="SimHei" font-size="11" fill="#6B7280">时间轴缺口</text>
+  <text x="1236" y="380" font-family="SimHei" font-size="17" fill="#0CA678">0</text>
+  <text x="1300" y="380" font-family="SimHei" font-size="11" fill="#6B7280">连续</text>
+
+  <rect x="1052" y="404" width="332" height="26" rx="4" fill="#FFF4E6" stroke="#E8590C"/>
+  <text x="1062" y="422" font-family="SimHei" font-size="11" fill="#E8590C">⚠ 电压越界 4,010 分钟（&lt;210V 或 &gt;250V），已标记不删除</text>
+
+  <circle cx="1392" cy="302" r="11" fill="#E03131"/>
+  <text x="1388" y="307" font-family="SimHei" font-size="12" fill="#FFFFFF">3</text>
+
+  <!-- Schema 抽屉 -->
+  <rect x="1032" y="458" width="368" height="164" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="1052" y="486" font-family="SimHei" font-size="14" fill="#1F2937">Schema 数据字典（抽屉）</text>
+  <rect x="1052" y="500" width="332" height="28" rx="4" fill="#F1F3F5"/>
+  <text x="1062" y="519" font-family="SimHei" font-size="11" fill="#6B7280">字段名</text>
+  <text x="1180" y="519" font-family="SimHei" font-size="11" fill="#6B7280">类型 / 单位</text>
+  <text x="1300" y="519" font-family="SimHei" font-size="11" fill="#6B7280">可否 SUM</text>
+
+  <text x="1062" y="548" font-family="SimHei" font-size="11" fill="#1F2937">consumption_kwh</text>
+  <text x="1180" y="548" font-family="SimHei" font-size="11" fill="#1F2937">REAL / kWh</text>
+  <text x="1300" y="548" font-family="SimHei" font-size="11" fill="#0CA678">是</text>
+  <text x="1062" y="572" font-family="SimHei" font-size="11" fill="#1F2937">peak_ratio</text>
+  <text x="1180" y="572" font-family="SimHei" font-size="11" fill="#1F2937">REAL / 比率</text>
+  <text x="1300" y="572" font-family="SimHei" font-size="11" fill="#E03131">否</text>
+  <text x="1062" y="596" font-family="SimHei" font-size="11" fill="#1F2937">is_partial_period</text>
+  <text x="1180" y="596" font-family="SimHei" font-size="11" fill="#1F2937">INTEGER / 0-1</text>
+  <text x="1300" y="596" font-family="SimHei" font-size="11" fill="#6B7280">—</text>
+  <text x="1052" y="614" font-family="SimHei" font-size="11" fill="#1D4ED8">查看完整口径说明与红线规则 →</text>
+
+  <circle cx="1392" cy="468" r="11" fill="#E03131"/>
+  <text x="1388" y="473" font-family="SimHei" font-size="12" fill="#FFFFFF">4</text>
+
+  <!-- 两步上传流程 -->
+  <rect x="272" y="642" width="1128" height="86" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="670" font-family="SimHei" font-size="13" fill="#1F2937">上传流程（两步确认，避免脏数据直接入库）</text>
+  <rect x="292" y="684" width="160" height="28" rx="6" fill="#1D4ED8"/>
+  <text x="308" y="703" font-family="SimHei" font-size="11" fill="#FFFFFF">① 选择文件</text>
+  <text x="460" y="703" font-family="SimHei" font-size="12" fill="#ADB5BD">→</text>
+  <rect x="482" y="684" width="180" height="28" rx="6" fill="#E8EFFD" stroke="#1D4ED8"/>
+  <text x="498" y="703" font-family="SimHei" font-size="11" fill="#1D4ED8">② 预览与质量校验</text>
+  <text x="670" y="703" font-family="SimHei" font-size="12" fill="#ADB5BD">→</text>
+  <rect x="692" y="684" width="168" height="28" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="708" y="703" font-family="SimHei" font-size="11" fill="#1F2937">③ 确认并入库</text>
+  <text x="880" y="703" font-family="SimHei" font-size="11" fill="#6B7280">入库后自动生成 Schema 描述，并出现在报表列表中可直接对话分析</text>
+
+  <text x="272" y="762" font-family="SimHei" font-size="11" fill="#6B7280">注：删除报表需二次确认；删除将级联清理该报表的分析记录（安全日志保留）</text>
+  <text x="272" y="784" font-family="SimHei" font-size="11" fill="#6B7280">注：预置 5 张报表由数据清洗脚本生成，不允许在界面上删除</text>
+  <text x="272" y="806" font-family="SimHei" font-size="11" fill="#6B7280">注：上传解析进度与已耗时对用户可见（207 万行文件预期 ≤60s，对应指标 N4）</text>
+</svg>

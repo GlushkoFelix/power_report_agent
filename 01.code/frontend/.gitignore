@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vite
+*.log
+
+# TS 增量编译信息（构建产物，不进版本库）
+*.tsbuildinfo
+

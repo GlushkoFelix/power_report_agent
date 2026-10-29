@@ -1,0 +1,1799 @@
+{
+  "caliber_version": "caliber-v1.0",
+  "generated_at": "2026-09-15T11:06:51",
+  "data_source": "UCI #235 Individual Household Electric Power Consumption",
+  "red_lines": [
+    {
+      "code": "R1",
+      "rule": "量纲：`*_kwh` 是电量（可相加）；`*_kw` 是功率（**不可相加**，只能求平均/最大/最小）；`_kwh` 已由 kW÷60、Wh÷1000 统一换算，**不要再次换算**。"
+    },
+    {
+      "code": "R2",
+      "rule": "未计量用电 `unmetered_kwh` = `gap_kwh` − `sm1_kwh` − `sm2_kwh` − `sm3_kwh`（代表其他电器），报表已直接提供该列，**不要自行推导公式**。"
+    },
+    {
+      "code": "R3",
+      "rule": "两套**正交**拆分：按用途（`sm1_kwh` 厨房 / `sm2_kwh` 洗衣房 / `sm3_kwh` 热水空调 / `unmetered_kwh` 未计量）与按时段（`peak_kwh` 峰 / `flat_kwh` 平 / `valley_kwh` 谷）。两套各自求和都等于总量，**混加会得到约 2 倍错误结果**，禁止在同一聚合里混用。"
+    },
+    {
+      "code": "R4",
+      "rule": "`expected_minutes` 是自然时间长度（小时 60 / 日 1440 / 月 = 天数×1440），与是否有数据无关；`coverage` = `active_minutes` / `expected_minutes`，**首末周期覆盖率为低值是边界效应，不是异常**。"
+    },
+    {
+      "code": "R5",
+      "rule": "日均用电 `daily_avg_kwh` = 电量 × 1440 / `active_minutes`（按有效数据折算），**不可 SUM**；`active_minutes = 0` 时该值为 NULL。"
+    },
+    {
+      "code": "R6",
+      "rule": "所有比率型字段（`*_ratio`、`coverage`、`load_factor`、`mom_rate`、`yoy_rate`）**不可 SUM**——跨周期汇总必须「分子求和 ÷ 分母求和」重算。"
+    },
+    {
+      "code": "R7",
+      "rule": "结构报表中 `period = '全期'` 的行（`is_total_row = 1`）是各年份行的合计，**求和时绝不可与年份行一起 SUM**（否则结果翻倍）。"
+    }
+  ],
+  "sqlite_functions": [
+    "SUM / AVG / MIN / MAX / COUNT / COUNT(DISTINCT ...)",
+    "ROUND(x, n) / ABS(x) / CAST(x AS INTEGER)",
+    "SQRT(x) / POWER(x, y) / EXP(x) / LN(x) / LOG10(x)",
+    "strftime('%Y', date) / datetime(...) / julianday(...)",
+    "CASE WHEN ... THEN ... ELSE ... END / COALESCE(x, 0) / NULLIF(x, 0)",
+    "注意：**没有 STDDEV_POP / STDDEV_SAMP / VAR_POP**，标准差请写成 SQRT(AVG(x*x) - AVG(x)*AVG(x))",
+    "注意：**没有 MEDIAN / PERCENTILE**，如需中位数请用 pandas 路径或自行排序取中"
+  ],
+  "sample_questions": [
+    "全期总用电量是多少？",
+    "哪个月用电量最高？",
+    "峰段用电占比多少？",
+    "厨房用电占总用电的比例是多少？",
+    "有哪些用电异常日？",
+    "周末与工作日的日均用电对比如何？",
+    "2010 年比 2009 年用电增长多少？",
+    "未计量用电有多少？"
+  ],
+  "tables": {
+    "report_minute": {
+      "table": "report_minute",
+      "title": "分钟级明细表",
+      "description": "分钟级明细（207 万行；仅入库，不导出 CSV）",
+      "caliber_version": "caliber-v1.0",
+      "row_count": 2075259,
+      "time_range": [
+        "2006-12-16 17:24:00",
+        "2010-11-26 21:02:00"
+      ],
+      "columns": [
+        {
+          "name": "dt",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "时间戳 'YYYY-MM-DD HH:MM:SS'（唯一）"
+        },
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": ""
+        },
+        {
+          "name": "month",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "1-12"
+        },
+        {
+          "name": "day",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "1-31"
+        },
+        {
+          "name": "hour",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "0-23"
+        },
+        {
+          "name": "weekday",
+          "type": "INTEGER",
+          "unit": "0=周一",
+          "agg": "none",
+          "description": "0=周一 … 6=周日"
+        },
+        {
+          "name": "is_weekend",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "1=周六/周日"
+        },
+        {
+          "name": "period",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "peak 峰 / flat 平 / valley 谷"
+        },
+        {
+          "name": "gap_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "总有功功率(kW)"
+        },
+        {
+          "name": "gap_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "分钟电量 = gap_kw / 60"
+        },
+        {
+          "name": "sm1_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "厨房（原始 Wh / 1000）"
+        },
+        {
+          "name": "sm2_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "洗衣房"
+        },
+        {
+          "name": "sm3_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "热水器与空调"
+        },
+        {
+          "name": "unmetered_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "未计量 = gap_kw/60 − sm1 − sm2 − sm3"
+        },
+        {
+          "name": "voltage",
+          "type": "REAL",
+          "unit": "V",
+          "agg": "—",
+          "description": "电压(V)"
+        },
+        {
+          "name": "intensity",
+          "type": "REAL",
+          "unit": "A",
+          "agg": "—",
+          "description": "电流(A)"
+        },
+        {
+          "name": "reactive_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "无功功率(kW)"
+        },
+        {
+          "name": "is_missing",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "1=原始行缺失（数值列全为 NULL）"
+        }
+      ]
+    },
+    "report_hourly": {
+      "table": "report_hourly",
+      "title": "小时报",
+      "description": "小时报（约 3.46 万行）",
+      "caliber_version": "caliber-v1.0",
+      "row_count": 34589,
+      "time_range": [
+        "2006-12-16 17:00:00",
+        "2010-11-26 21:00:00"
+      ],
+      "columns": [
+        {
+          "name": "dt_hour",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "'YYYY-MM-DD HH:00:00'（唯一）",
+          "null_count": 0,
+          "sample": [
+            "2006-12-16 17:00:00",
+            "2006-12-16 18:00:00",
+            "2006-12-16 19:00:00"
+          ]
+        },
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 2006.0,
+          "max": 2010.0,
+          "sample": [
+            2006,
+            2006,
+            2006
+          ]
+        },
+        {
+          "name": "month",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 1.0,
+          "max": 12.0,
+          "sample": [
+            12,
+            12,
+            12
+          ]
+        },
+        {
+          "name": "day",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 1.0,
+          "max": 31.0,
+          "sample": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "name": "hour",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 23.0,
+          "sample": [
+            17,
+            18,
+            19
+          ]
+        },
+        {
+          "name": "weekday",
+          "type": "INTEGER",
+          "unit": "0=周一",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 6.0,
+          "sample": [
+            5,
+            5,
+            5
+          ]
+        },
+        {
+          "name": "is_weekend",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "name": "period",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "该小时所属时段（一小时完整落在单一时段内）",
+          "null_count": 0,
+          "sample": [
+            "flat",
+            "peak",
+            "peak"
+          ]
+        },
+        {
+          "name": "consumption_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "小时总电量",
+          "null_count": 421,
+          "min": 0.0296,
+          "max": 6.560533,
+          "sample": [
+            2.533733,
+            3.6322,
+            3.400233
+          ]
+        },
+        {
+          "name": "sm1_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 421,
+          "min": 0.0,
+          "max": 2.902,
+          "sample": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "sm2_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 421,
+          "min": 0.0,
+          "max": 2.786,
+          "sample": [
+            0.019,
+            0.403,
+            0.086
+          ]
+        },
+        {
+          "name": "sm3_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 421,
+          "min": 0.0,
+          "max": 1.293,
+          "sample": [
+            0.607,
+            1.012,
+            1.001
+          ]
+        },
+        {
+          "name": "unmetered_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 421,
+          "min": 0.0276,
+          "max": 3.890233,
+          "sample": [
+            1.907733,
+            2.2172,
+            2.313233
+          ]
+        },
+        {
+          "name": "peak_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "时段电量（按时段正交拆分之一）",
+          "null_count": 26031,
+          "min": 0.0296,
+          "max": 6.560533,
+          "sample": [
+            3.6322,
+            3.400233,
+            3.268567
+          ]
+        },
+        {
+          "name": "flat_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 20363,
+          "min": 0.0693,
+          "max": 6.333667,
+          "sample": [
+            2.533733,
+            1.890567,
+            2.549067
+          ]
+        },
+        {
+          "name": "valley_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 23205,
+          "min": 0.127533,
+          "max": 5.759067,
+          "sample": [
+            1.882467,
+            3.3494,
+            1.587267
+          ]
+        },
+        {
+          "name": "active_minutes",
+          "type": "INTEGER",
+          "unit": "分钟",
+          "agg": "none",
+          "description": "有效分钟数",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 60.0,
+          "sample": [
+            36,
+            60,
+            60
+          ]
+        },
+        {
+          "name": "expected_minutes",
+          "type": "INTEGER",
+          "unit": "分钟",
+          "agg": "none",
+          "description": "自然时间长度（恒 60）",
+          "null_count": 0,
+          "min": 60.0,
+          "max": 60.0,
+          "sample": [
+            60,
+            60,
+            60
+          ]
+        },
+        {
+          "name": "coverage",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "比率，不可 SUM",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            0.6,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "avg_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "功率，不可 SUM",
+          "null_count": 421,
+          "min": 0.124,
+          "max": 6.561,
+          "sample": [
+            4.223,
+            3.632,
+            3.4
+          ]
+        },
+        {
+          "name": "max_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 421,
+          "min": 0.19,
+          "max": 11.122,
+          "sample": [
+            7.706,
+            6.752,
+            4.07
+          ]
+        },
+        {
+          "name": "min_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 421,
+          "min": 0.076,
+          "max": 4.774,
+          "sample": [
+            2.472,
+            2.188,
+            3.202
+          ]
+        },
+        {
+          "name": "avg_voltage",
+          "type": "REAL",
+          "unit": "V",
+          "agg": "—",
+          "description": "",
+          "null_count": 421,
+          "min": 225.834,
+          "max": 251.902,
+          "sample": [
+            234.644,
+            234.58,
+            233.233
+          ]
+        },
+        {
+          "name": "avg_intensity",
+          "type": "REAL",
+          "unit": "A",
+          "agg": "—",
+          "description": "",
+          "null_count": 421,
+          "min": 0.503,
+          "max": 28.383,
+          "sample": [
+            18.1,
+            15.6,
+            14.503
+          ]
+        }
+      ]
+    },
+    "report_daily": {
+      "table": "report_daily",
+      "title": "日报",
+      "description": "日报（约 1442 行）",
+      "caliber_version": "caliber-v1.0",
+      "row_count": 1442,
+      "time_range": [
+        "2006-12-16",
+        "2010-11-26"
+      ],
+      "columns": [
+        {
+          "name": "date",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "'YYYY-MM-DD'（唯一）",
+          "null_count": 0,
+          "sample": [
+            "2006-12-16",
+            "2006-12-17",
+            "2006-12-18"
+          ]
+        },
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 2006.0,
+          "max": 2010.0,
+          "sample": [
+            2006,
+            2006,
+            2006
+          ]
+        },
+        {
+          "name": "month",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 1.0,
+          "max": 12.0,
+          "sample": [
+            12,
+            12,
+            12
+          ]
+        },
+        {
+          "name": "day",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 1.0,
+          "max": 31.0,
+          "sample": [
+            16,
+            17,
+            18
+          ]
+        },
+        {
+          "name": "weekday",
+          "type": "INTEGER",
+          "unit": "0=周一",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 6.0,
+          "sample": [
+            5,
+            6,
+            0
+          ]
+        },
+        {
+          "name": "is_weekend",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "name": "consumption_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 9,
+          "min": 0.236967,
+          "max": 79.556433,
+          "sample": [
+            20.152933,
+            56.507667,
+            36.730433
+          ]
+        },
+        {
+          "name": "sm1_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 9,
+          "min": 0.0,
+          "max": 11.178,
+          "sample": [
+            0.0,
+            2.033,
+            1.063
+          ]
+        },
+        {
+          "name": "sm2_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 9,
+          "min": 0.0,
+          "max": 12.109,
+          "sample": [
+            0.546,
+            4.187,
+            2.621
+          ]
+        },
+        {
+          "name": "sm3_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 9,
+          "min": 0.0,
+          "max": 23.743,
+          "sample": [
+            4.926,
+            13.341,
+            14.018
+          ]
+        },
+        {
+          "name": "unmetered_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 9,
+          "min": 0.152967,
+          "max": 61.736433,
+          "sample": [
+            14.680933,
+            36.946667,
+            19.028433
+          ]
+        },
+        {
+          "name": "peak_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 14,
+          "min": 0.9678,
+          "max": 26.5094,
+          "sample": [
+            17.6192,
+            14.9635,
+            13.5234
+          ]
+        },
+        {
+          "name": "flat_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 17,
+          "min": 1.373967,
+          "max": 37.5122,
+          "sample": [
+            2.533733,
+            25.927,
+            17.6427
+          ]
+        },
+        {
+          "name": "valley_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 15,
+          "min": 0.236967,
+          "max": 22.482133,
+          "sample": [
+            15.617167,
+            5.564333,
+            5.042167
+          ]
+        },
+        {
+          "name": "active_minutes",
+          "type": "INTEGER",
+          "unit": "分钟",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1440.0,
+          "sample": [
+            396,
+            1440,
+            1440
+          ]
+        },
+        {
+          "name": "expected_minutes",
+          "type": "INTEGER",
+          "unit": "分钟",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 1440.0,
+          "max": 1440.0,
+          "sample": [
+            1440,
+            1440,
+            1440
+          ]
+        },
+        {
+          "name": "coverage",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "比率，不可 SUM",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            0.275,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "avg_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 9,
+          "min": 0.174,
+          "max": 3.315,
+          "sample": [
+            3.053,
+            2.354,
+            1.53
+          ]
+        },
+        {
+          "name": "max_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 9,
+          "min": 0.912,
+          "max": 11.122,
+          "sample": [
+            7.706,
+            7.064,
+            6.158
+          ]
+        },
+        {
+          "name": "min_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 9,
+          "min": 0.076,
+          "max": 0.842,
+          "sample": [
+            0.284,
+            0.206,
+            0.202
+          ]
+        },
+        {
+          "name": "avg_voltage",
+          "type": "REAL",
+          "unit": "V",
+          "agg": "—",
+          "description": "",
+          "null_count": 9,
+          "min": 231.088,
+          "max": 247.435,
+          "sample": [
+            236.244,
+            240.087,
+            241.232
+          ]
+        },
+        {
+          "name": "avg_intensity",
+          "type": "REAL",
+          "unit": "A",
+          "agg": "—",
+          "description": "",
+          "null_count": 9,
+          "min": 0.808,
+          "max": 14.028,
+          "sample": [
+            13.083,
+            9.999,
+            6.422
+          ]
+        },
+        {
+          "name": "daily_avg_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "按有效数据折算；active_minutes=0 时 NULL",
+          "null_count": 9,
+          "min": 4.171633,
+          "max": 79.556433,
+          "sample": [
+            73.283394,
+            56.507667,
+            36.730433
+          ]
+        },
+        {
+          "name": "load_factor",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "比率，不可 SUM",
+          "null_count": 9,
+          "min": 0.071093,
+          "max": 0.732586,
+          "sample": [
+            0.396246,
+            0.333308,
+            0.248528
+          ]
+        },
+        {
+          "name": "sm1_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 9,
+          "min": 0.0,
+          "max": 0.326386,
+          "sample": [
+            0.0,
+            0.035977,
+            0.028941
+          ]
+        },
+        {
+          "name": "sm2_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 9,
+          "min": 0.0,
+          "max": 0.379749,
+          "sample": [
+            0.027093,
+            0.074096,
+            0.071358
+          ]
+        },
+        {
+          "name": "sm3_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 9,
+          "min": 0.0,
+          "max": 0.615032,
+          "sample": [
+            0.244431,
+            0.236092,
+            0.381645
+          ]
+        },
+        {
+          "name": "unmetered_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 9,
+          "min": 0.262487,
+          "max": 0.952502,
+          "sample": [
+            0.728476,
+            0.653835,
+            0.518056
+          ]
+        },
+        {
+          "name": "peak_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 14,
+          "min": 0.054184,
+          "max": 1.0,
+          "sample": [
+            0.874275,
+            0.264805,
+            0.36818
+          ]
+        },
+        {
+          "name": "flat_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 17,
+          "min": 0.125725,
+          "max": 0.771883,
+          "sample": [
+            0.125725,
+            0.458823,
+            0.480329
+          ]
+        },
+        {
+          "name": "valley_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 15,
+          "min": 0.057706,
+          "max": 1.0,
+          "sample": [
+            0.276373,
+            0.151491,
+            0.181569
+          ]
+        },
+        {
+          "name": "peak_hour",
+          "type": "INTEGER",
+          "unit": "整点(0-23)",
+          "agg": "none",
+          "description": "当日峰值整点 0-23（18 表示 18:00–18:59）",
+          "null_count": 9,
+          "min": 0.0,
+          "max": 23.0,
+          "sample": [
+            18.0,
+            18.0,
+            20.0
+          ]
+        },
+        {
+          "name": "is_anomaly",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "anomaly_reason",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "命中规则名，多规则以 | 分隔",
+          "null_count": 1361,
+          "sample": [
+            "rolling3sigma_high",
+            "voltage_out_of_range",
+            "peak_ratio_anomaly"
+          ]
+        },
+        {
+          "name": "is_partial_period",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "1=不完整自然日（首/末日）",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "partial_reason",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "",
+          "null_count": 1440,
+          "sample": [
+            "数据自 17:24 开始",
+            "数据至 21:02 结束"
+          ]
+        }
+      ]
+    },
+    "report_monthly": {
+      "table": "report_monthly",
+      "title": "月报",
+      "description": "月报（48 行）",
+      "caliber_version": "caliber-v1.0",
+      "row_count": 48,
+      "time_range": [
+        "2006-12",
+        "2010-11"
+      ],
+      "columns": [
+        {
+          "name": "year_month",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "'YYYY-MM'（唯一）",
+          "null_count": 0,
+          "sample": [
+            "2006-12",
+            "2007-01",
+            "2007-02"
+          ]
+        },
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 2006.0,
+          "max": 2010.0,
+          "sample": [
+            2006,
+            2007,
+            2007
+          ]
+        },
+        {
+          "name": "month",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 1.0,
+          "max": 12.0,
+          "sample": [
+            12,
+            1,
+            2
+          ]
+        },
+        {
+          "name": "days_in_month",
+          "type": "INTEGER",
+          "unit": "天",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 28.0,
+          "max": 31.0,
+          "sample": [
+            31,
+            31,
+            28
+          ]
+        },
+        {
+          "name": "consumption_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 205.698,
+          "max": 1210.0695,
+          "sample": [
+            696.888033,
+            1150.1977,
+            941.481433
+          ]
+        },
+        {
+          "name": "sm1_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 3.873,
+          "max": 75.737,
+          "sample": [
+            27.46,
+            56.433,
+            47.584
+          ]
+        },
+        {
+          "name": "sm2_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 22.264,
+          "max": 104.762,
+          "sample": [
+            48.712,
+            79.274,
+            64.604
+          ]
+        },
+        {
+          "name": "sm3_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 79.665,
+          "max": 411.714,
+          "sample": [
+            162.951,
+            329.578,
+            270.274
+          ]
+        },
+        {
+          "name": "unmetered_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 99.896,
+          "max": 690.6255,
+          "sample": [
+            457.765033,
+            684.9127,
+            559.019433
+          ]
+        },
+        {
+          "name": "peak_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 64.285033,
+          "max": 435.886133,
+          "sample": [
+            234.670767,
+            405.992133,
+            341.049533
+          ]
+        },
+        {
+          "name": "flat_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 83.800167,
+          "max": 587.9145,
+          "sample": [
+            317.445167,
+            496.8947,
+            358.689033
+          ]
+        },
+        {
+          "name": "valley_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 57.6128,
+          "max": 247.310867,
+          "sample": [
+            144.7721,
+            247.310867,
+            241.742867
+          ]
+        },
+        {
+          "name": "active_minutes",
+          "type": "INTEGER",
+          "unit": "分钟",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 21992.0,
+          "max": 44640.0,
+          "sample": [
+            21992,
+            44638,
+            40318
+          ]
+        },
+        {
+          "name": "expected_minutes",
+          "type": "INTEGER",
+          "unit": "分钟",
+          "agg": "none",
+          "description": "当月天数 * 1440",
+          "null_count": 0,
+          "min": 40320.0,
+          "max": 44640.0,
+          "sample": [
+            44640,
+            44640,
+            40320
+          ]
+        },
+        {
+          "name": "coverage",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.492652,
+          "max": 1.0,
+          "sample": [
+            0.492652,
+            0.999955,
+            0.99995
+          ]
+        },
+        {
+          "name": "avg_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.276,
+          "max": 1.901,
+          "sample": [
+            1.901,
+            1.546,
+            1.401
+          ]
+        },
+        {
+          "name": "max_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 5.578,
+          "max": 11.122,
+          "sample": [
+            9.132,
+            9.272,
+            9.41
+          ]
+        },
+        {
+          "name": "min_power_kw",
+          "type": "REAL",
+          "unit": "kW",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.076,
+          "max": 0.234,
+          "sample": [
+            0.194,
+            0.198,
+            0.204
+          ]
+        },
+        {
+          "name": "daily_avg_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 6.635717,
+          "max": 45.631083,
+          "sample": [
+            45.631083,
+            37.104814,
+            33.626005
+          ]
+        },
+        {
+          "name": "mom_rate",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "环比（比率，不可 SUM）",
+          "null_count": 1,
+          "min": -0.65212,
+          "max": 2.457155,
+          "sample": [
+            0.650477,
+            -0.181461,
+            0.042014
+          ]
+        },
+        {
+          "name": "yoy_rate",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "同比（比率，不可 SUM）",
+          "null_count": 12,
+          "min": -0.63803,
+          "max": 1.355914,
+          "sample": [
+            0.73639,
+            -0.055679,
+            -0.126712
+          ]
+        },
+        {
+          "name": "is_anomaly",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "anomaly_reason",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "",
+          "null_count": 39,
+          "sample": [
+            "rolling3sigma_low",
+            "rolling3sigma_high",
+            "rolling3sigma_low"
+          ]
+        },
+        {
+          "name": "is_partial_period",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "1=不完整自然月（首/末月）",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "partial_reason",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "",
+          "null_count": 46,
+          "sample": [
+            "数据自 17:24 开始",
+            "数据至 21:02 结束"
+          ]
+        }
+      ]
+    },
+    "report_energy_structure": {
+      "table": "report_energy_structure",
+      "title": "用电结构报表",
+      "description": "用电结构报表（6 行：2006–2010 五年 + 全期）",
+      "caliber_version": "caliber-v1.0",
+      "row_count": 6,
+      "time_range": null,
+      "columns": [
+        {
+          "name": "period",
+          "type": "TEXT",
+          "unit": "—",
+          "agg": "—",
+          "description": "'2006'…'2010' / '全期'（唯一）",
+          "null_count": 0,
+          "sample": [
+            "2006",
+            "2007",
+            "2008"
+          ]
+        },
+        {
+          "name": "is_total_row",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "—",
+          "description": "1=全期合计行",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 1.0,
+          "sample": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "unit": "—",
+          "agg": "none",
+          "description": "全期行为 NULL",
+          "null_count": 1,
+          "min": 2006.0,
+          "max": 2010.0,
+          "sample": [
+            2006.0,
+            2007.0,
+            2008.0
+          ]
+        },
+        {
+          "name": "kitchen_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 27.46,
+          "max": 2299.135,
+          "sample": [
+            27.46,
+            642.548,
+            584.784
+          ]
+        },
+        {
+          "name": "laundry_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 48.712,
+          "max": 2661.031,
+          "sample": [
+            48.712,
+            854.36,
+            661.905
+          ]
+        },
+        {
+          "name": "water_heating_ac_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 162.951,
+          "max": 13235.167,
+          "sample": [
+            162.951,
+            3022.84,
+            3179.187
+          ]
+        },
+        {
+          "name": "other_unmetered_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 457.765033,
+          "max": 19088.4147,
+          "sample": [
+            457.765033,
+            5192.0551,
+            4989.0089
+          ]
+        },
+        {
+          "name": "kitchen_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.039404,
+          "max": 0.066162,
+          "sample": [
+            0.039404,
+            0.066162,
+            0.062113
+          ]
+        },
+        {
+          "name": "laundry_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.062301,
+          "max": 0.087971,
+          "sample": [
+            0.069899,
+            0.087971,
+            0.070304
+          ]
+        },
+        {
+          "name": "water_heating_ac_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.233827,
+          "max": 0.409653,
+          "sample": [
+            0.233827,
+            0.311254,
+            0.337677
+          ]
+        },
+        {
+          "name": "other_unmetered_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.472201,
+          "max": 0.65687,
+          "sample": [
+            0.65687,
+            0.534613,
+            0.529907
+          ]
+        },
+        {
+          "name": "peak_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 234.670767,
+          "max": 13045.1366,
+          "sample": [
+            234.670767,
+            3623.4542,
+            3293.723433
+          ]
+        },
+        {
+          "name": "flat_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 317.445167,
+          "max": 16677.2794,
+          "sample": [
+            317.445167,
+            4182.149133,
+            4191.583633
+          ]
+        },
+        {
+          "name": "valley_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "",
+          "null_count": 0,
+          "min": 144.7721,
+          "max": 7561.3317,
+          "sample": [
+            144.7721,
+            1906.199767,
+            1929.577833
+          ]
+        },
+        {
+          "name": "peak_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.327935,
+          "max": 0.373098,
+          "sample": [
+            0.336741,
+            0.373098,
+            0.349842
+          ]
+        },
+        {
+          "name": "flat_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.430625,
+          "max": 0.462303,
+          "sample": [
+            0.455518,
+            0.430625,
+            0.445208
+          ]
+        },
+        {
+          "name": "valley_ratio",
+          "type": "REAL",
+          "unit": "比率",
+          "agg": "none",
+          "description": "",
+          "null_count": 0,
+          "min": 0.196277,
+          "max": 0.209762,
+          "sample": [
+            0.207741,
+            0.196277,
+            0.20495
+          ]
+        },
+        {
+          "name": "total_kwh",
+          "type": "REAL",
+          "unit": "kWh",
+          "agg": "sum",
+          "description": "周期总电量",
+          "null_count": 0,
+          "min": 696.888033,
+          "max": 37283.7477,
+          "sample": [
+            696.888033,
+            9711.8031,
+            9414.8849
+          ]
+        },
+        {
+          "name": "structure_closed",
+          "type": "REAL",
+          "unit": "—",
+          "agg": "none",
+          "description": "用途四项之和 − total_kwh（应≈0）",
+          "null_count": 0,
+          "min": -0.0,
+          "max": -0.0,
+          "sample": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "time_closed",
+          "type": "REAL",
+          "unit": "—",
+          "agg": "none",
+          "description": "时段三项之和 − total_kwh（应≈0）",
+          "null_count": 0,
+          "min": 0.0,
+          "max": 0.0,
+          "sample": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  }
+}

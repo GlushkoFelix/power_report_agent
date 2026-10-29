@@ -1,0 +1,308 @@
+{
+  "table": "report_energy_structure",
+  "title": "用电结构报表",
+  "description": "用电结构报表（6 行：2006–2010 五年 + 全期）",
+  "caliber_version": "caliber-v1.0",
+  "row_count": 6,
+  "time_range": null,
+  "columns": [
+    {
+      "name": "period",
+      "type": "TEXT",
+      "unit": "—",
+      "agg": "—",
+      "description": "'2006'…'2010' / '全期'（唯一）",
+      "null_count": 0,
+      "sample": [
+        "2006",
+        "2007",
+        "2008"
+      ]
+    },
+    {
+      "name": "is_total_row",
+      "type": "INTEGER",
+      "unit": "—",
+      "agg": "—",
+      "description": "1=全期合计行",
+      "null_count": 0,
+      "min": 0.0,
+      "max": 1.0,
+      "sample": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "year",
+      "type": "INTEGER",
+      "unit": "—",
+      "agg": "none",
+      "description": "全期行为 NULL",
+      "null_count": 1,
+      "min": 2006.0,
+      "max": 2010.0,
+      "sample": [
+        2006.0,
+        2007.0,
+        2008.0
+      ]
+    },
+    {
+      "name": "kitchen_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "",
+      "null_count": 0,
+      "min": 27.46,
+      "max": 2299.135,
+      "sample": [
+        27.46,
+        642.548,
+        584.784
+      ]
+    },
+    {
+      "name": "laundry_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "",
+      "null_count": 0,
+      "min": 48.712,
+      "max": 2661.031,
+      "sample": [
+        48.712,
+        854.36,
+        661.905
+      ]
+    },
+    {
+      "name": "water_heating_ac_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "",
+      "null_count": 0,
+      "min": 162.951,
+      "max": 13235.167,
+      "sample": [
+        162.951,
+        3022.84,
+        3179.187
+      ]
+    },
+    {
+      "name": "other_unmetered_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "",
+      "null_count": 0,
+      "min": 457.765033,
+      "max": 19088.4147,
+      "sample": [
+        457.765033,
+        5192.0551,
+        4989.0089
+      ]
+    },
+    {
+      "name": "kitchen_ratio",
+      "type": "REAL",
+      "unit": "比率",
+      "agg": "none",
+      "description": "",
+      "null_count": 0,
+      "min": 0.039404,
+      "max": 0.066162,
+      "sample": [
+        0.039404,
+        0.066162,
+        0.062113
+      ]
+    },
+    {
+      "name": "laundry_ratio",
+      "type": "REAL",
+      "unit": "比率",
+      "agg": "none",
+      "description": "",
+      "null_count": 0,
+      "min": 0.062301,
+      "max": 0.087971,
+      "sample": [
+        0.069899,
+        0.087971,
+        0.070304
+      ]
+    },
+    {
+      "name": "water_heating_ac_ratio",
+      "type": "REAL",
+      "unit": "比率",
+      "agg": "none",
+      "description": "",
+      "null_count": 0,
+      "min": 0.233827,
+      "max": 0.409653,
+      "sample": [
+        0.233827,
+        0.311254,
+        0.337677
+      ]
+    },
+    {
+      "name": "other_unmetered_ratio",
+      "type": "REAL",
+      "unit": "比率",
+      "agg": "none",
+      "description": "",
+      "null_count": 0,
+      "min": 0.472201,
+      "max": 0.65687,
+      "sample": [
+        0.65687,
+        0.534613,
+        0.529907
+      ]
+    },
+    {
+      "name": "peak_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "",
+      "null_count": 0,
+      "min": 234.670767,
+      "max": 13045.1366,
+      "sample": [
+        234.670767,
+        3623.4542,
+        3293.723433
+      ]
+    },
+    {
+      "name": "flat_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "",
+      "null_count": 0,
+      "min": 317.445167,
+      "max": 16677.2794,
+      "sample": [
+        317.445167,
+        4182.149133,
+        4191.583633
+      ]
+    },
+    {
+      "name": "valley_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "",
+      "null_count": 0,
+      "min": 144.7721,
+      "max": 7561.3317,
+      "sample": [
+        144.7721,
+        1906.199767,
+        1929.577833
+      ]
+    },
+    {
+      "name": "peak_ratio",
+      "type": "REAL",
+      "unit": "比率",
+      "agg": "none",
+      "description": "",
+      "null_count": 0,
+      "min": 0.327935,
+      "max": 0.373098,
+      "sample": [
+        0.336741,
+        0.373098,
+        0.349842
+      ]
+    },
+    {
+      "name": "flat_ratio",
+      "type": "REAL",
+      "unit": "比率",
+      "agg": "none",
+      "description": "",
+      "null_count": 0,
+      "min": 0.430625,
+      "max": 0.462303,
+      "sample": [
+        0.455518,
+        0.430625,
+        0.445208
+      ]
+    },
+    {
+      "name": "valley_ratio",
+      "type": "REAL",
+      "unit": "比率",
+      "agg": "none",
+      "description": "",
+      "null_count": 0,
+      "min": 0.196277,
+      "max": 0.209762,
+      "sample": [
+        0.207741,
+        0.196277,
+        0.20495
+      ]
+    },
+    {
+      "name": "total_kwh",
+      "type": "REAL",
+      "unit": "kWh",
+      "agg": "sum",
+      "description": "周期总电量",
+      "null_count": 0,
+      "min": 696.888033,
+      "max": 37283.7477,
+      "sample": [
+        696.888033,
+        9711.8031,
+        9414.8849
+      ]
+    },
+    {
+      "name": "structure_closed",
+      "type": "REAL",
+      "unit": "—",
+      "agg": "none",
+      "description": "用途四项之和 − total_kwh（应≈0）",
+      "null_count": 0,
+      "min": -0.0,
+      "max": -0.0,
+      "sample": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "time_closed",
+      "type": "REAL",
+      "unit": "—",
+      "agg": "none",
+      "description": "时段三项之和 − total_kwh（应≈0）",
+      "null_count": 0,
+      "min": 0.0,
+      "max": 0.0,
+      "sample": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect x="0" y="0" width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- 顶部栏 -->
+  <rect x="0" y="0" width="1440" height="56" fill="#FFFFFF"/>
+  <line x1="0" y1="56" x2="1440" y2="56" stroke="#D9DEE7"/>
+  <rect x="20" y="16" width="24" height="24" rx="6" fill="#1D4ED8"/>
+  <text x="54" y="34" font-family="SimHei" font-size="18" fill="#1F2937">智电析报</text>
+  <text x="700" y="34" font-family="SimHei" font-size="12" fill="#6B7280">对话工作台</text>
+  <text x="800" y="34" font-family="SimHei" font-size="12" fill="#6B7280">报表管理</text>
+  <text x="888" y="34" font-family="SimHei" font-size="12" fill="#1D4ED8">评测中心</text>
+  <text x="976" y="34" font-family="SimHei" font-size="12" fill="#6B7280">个人中心</text>
+
+  <text x="272" y="96" font-family="SimHei" font-size="20" fill="#1F2937">评测中心</text>
+  <text x="272" y="120" font-family="SimHei" font-size="12" fill="#6B7280">对 120 题评测集批量执行，统计执行正确率、结论准确性与响应耗时，定位 bad case</text>
+
+  <!-- 发起评测 -->
+  <rect x="272" y="140" width="1128" height="76" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="168" font-family="SimHei" font-size="12" fill="#6B7280">模型</text>
+  <rect x="332" y="152" width="200" height="30" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="344" y="172" font-family="SimHei" font-size="11" fill="#1F2937">百炼主力模型 ▾</text>
+  <text x="552" y="168" font-family="SimHei" font-size="12" fill="#6B7280">温度</text>
+  <rect x="592" y="152" width="80" height="30" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="604" y="172" font-family="SimHei" font-size="11" fill="#1F2937">0（固定）</text>
+  <text x="692" y="168" font-family="SimHei" font-size="12" fill="#6B7280">题量</text>
+  <rect x="732" y="152" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="744" y="172" font-family="SimHei" font-size="11" fill="#1F2937">120 题（全部）</text>
+  <rect x="872" y="152" width="120" height="30" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="884" y="172" font-family="SimHei" font-size="11" fill="#1F2937">含陷阱题 18 题</text>
+  <rect x="1012" y="150" width="140" height="34" rx="8" fill="#1D4ED8"/>
+  <text x="1046" y="172" font-family="SimHei" font-size="13" fill="#FFFFFF">开始评测</text>
+  <rect x="1164" y="150" width="140" height="34" rx="8" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="1192" y="172" font-family="SimHei" font-size="13" fill="#1F2937">导出报告</text>
+
+  <circle cx="1392" cy="150" r="11" fill="#E03131"/>
+  <text x="1388" y="155" font-family="SimHei" font-size="12" fill="#FFFFFF">1</text>
+
+  <!-- 指标卡 -->
+  <rect x="272" y="232" width="270" height="96" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="260" font-family="SimHei" font-size="12" fill="#6B7280">执行正确率</text>
+  <text x="292" y="296" font-family="SimHei" font-size="26" fill="#0CA678">86.7%</text>
+  <text x="400" y="296" font-family="SimHei" font-size="11" fill="#6B7280">目标 ≥85%</text>
+  <text x="292" y="316" font-family="SimHei" font-size="11" fill="#ADB5BD">104 / 120 题</text>
+
+  <rect x="558" y="232" width="270" height="96" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="578" y="260" font-family="SimHei" font-size="12" fill="#6B7280">结论关键数值命中率</text>
+  <text x="578" y="296" font-family="SimHei" font-size="26" fill="#0CA678">91.2%</text>
+  <text x="690" y="296" font-family="SimHei" font-size="11" fill="#6B7280">目标 ≥90%</text>
+  <text x="578" y="316" font-family="SimHei" font-size="11" fill="#ADB5BD">规则判定 + 抽样复核</text>
+
+  <rect x="844" y="232" width="270" height="96" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="864" y="260" font-family="SimHei" font-size="12" fill="#6B7280">平均响应时间</text>
+  <text x="864" y="296" font-family="SimHei" font-size="26" fill="#E8590C">6.4s</text>
+  <text x="952" y="296" font-family="SimHei" font-size="11" fill="#6B7280">目标 ≤8s</text>
+  <text x="864" y="316" font-family="SimHei" font-size="11" fill="#ADB5BD">P95 8.9s · 首字 1.3s</text>
+
+  <rect x="1130" y="232" width="270" height="96" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="1150" y="260" font-family="SimHei" font-size="12" fill="#6B7280">陷阱题正确率</text>
+  <text x="1150" y="296" font-family="SimHei" font-size="26" fill="#E8590C">77.8%</text>
+  <text x="1240" y="296" font-family="SimHei" font-size="11" fill="#6B7280">低于总体</text>
+  <text x="1150" y="316" font-family="SimHei" font-size="11" fill="#ADB5BD">14/18 题 · 待优化</text>
+
+  <circle cx="1392" cy="242" r="11" fill="#E03131"/>
+  <text x="1388" y="247" font-family="SimHei" font-size="12" fill="#FFFFFF">2</text>
+
+  <!-- 分类正确率 -->
+  <rect x="272" y="348" width="560" height="286" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="376" font-family="SimHei" font-size="14" fill="#1F2937">分类正确率（按题型）</text>
+
+  <text x="292" y="410" font-family="SimHei" font-size="11" fill="#1F2937">统计</text>
+  <rect x="352" y="400" width="400" height="14" rx="7" fill="#EEF1F5"/>
+  <rect x="352" y="400" width="372" height="14" rx="7" fill="#0CA678"/>
+  <text x="764" y="412" font-family="SimHei" font-size="11" fill="#1F2937">93.3%</text>
+
+  <text x="292" y="442" font-family="SimHei" font-size="11" fill="#1F2937">聚合分组</text>
+  <rect x="352" y="432" width="400" height="14" rx="7" fill="#EEF1F5"/>
+  <rect x="352" y="432" width="348" height="14" rx="7" fill="#0CA678"/>
+  <text x="764" y="444" font-family="SimHei" font-size="11" fill="#1F2937">87.0%</text>
+
+  <text x="292" y="474" font-family="SimHei" font-size="11" fill="#1F2937">对比</text>
+  <rect x="352" y="464" width="400" height="14" rx="7" fill="#EEF1F5"/>
+  <rect x="352" y="464" width="340" height="14" rx="7" fill="#0CA678"/>
+  <text x="764" y="476" font-family="SimHei" font-size="11" fill="#1F2937">85.0%</text>
+
+  <text x="292" y="506" font-family="SimHei" font-size="11" fill="#1F2937">异常分析</text>
+  <rect x="352" y="496" width="400" height="14" rx="7" fill="#EEF1F5"/>
+  <rect x="352" y="496" width="312" height="14" rx="7" fill="#E8590C"/>
+  <text x="764" y="508" font-family="SimHei" font-size="11" fill="#1F2937">78.0%</text>
+
+  <text x="292" y="538" font-family="SimHei" font-size="11" fill="#1F2937">结构占比</text>
+  <rect x="352" y="528" width="400" height="14" rx="7" fill="#EEF1F5"/>
+  <rect x="352" y="528" width="330" height="14" rx="7" fill="#0CA678"/>
+  <text x="764" y="540" font-family="SimHei" font-size="11" fill="#1F2937">82.5%</text>
+
+  <text x="292" y="570" font-family="SimHei" font-size="11" fill="#1F2937">多轮追问</text>
+  <rect x="352" y="560" width="400" height="14" rx="7" fill="#EEF1F5"/>
+  <rect x="352" y="560" width="320" height="14" rx="7" fill="#0CA678"/>
+  <text x="764" y="572" font-family="SimHei" font-size="11" fill="#1F2937">80.0%</text>
+
+  <text x="292" y="606" font-family="SimHei" font-size="11" fill="#6B7280">结论：异常分析与结构占比两类是下一轮优化重点（归因见右侧）</text>
+
+  <!-- bad case 归因 -->
+  <rect x="844" y="348" width="556" height="286" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="864" y="376" font-family="SimHei" font-size="14" fill="#1F2937">bad case 归因分布</text>
+
+  <rect x="864" y="392" width="252" height="72" rx="6" fill="#FFF5F5" stroke="#E03131"/>
+  <text x="876" y="414" font-family="SimHei" font-size="11" fill="#E03131">口径理解错误（量纲 / 拆分 / 比率）</text>
+  <text x="876" y="440" font-family="SimHei" font-size="17" fill="#E03131">7 题</text>
+  <text x="950" y="440" font-family="SimHei" font-size="11" fill="#6B7280">→ 补 Schema 红线示例</text>
+
+  <rect x="1132" y="392" width="252" height="72" rx="6" fill="#FFF4E6" stroke="#E8590C"/>
+  <text x="1144" y="414" font-family="SimHei" font-size="11" fill="#E8590C">SQL 语法 / 函数不支持</text>
+  <text x="1144" y="440" font-family="SimHei" font-size="17" fill="#E8590C">4 题</text>
+  <text x="1220" y="440" font-family="SimHei" font-size="11" fill="#6B7280">→ 补可用函数清单</text>
+
+  <rect x="864" y="476" width="252" height="72" rx="6" fill="#F1F3F5" stroke="#D9DEE7"/>
+  <text x="876" y="498" font-family="SimHei" font-size="11" fill="#1F2937">slot 继承错误（多轮）</text>
+  <text x="876" y="524" font-family="SimHei" font-size="17" fill="#1F2937">3 题</text>
+  <text x="950" y="524" font-family="SimHei" font-size="11" fill="#6B7280">→ 补多轮合并规则</text>
+
+  <rect x="1132" y="476" width="252" height="72" rx="6" fill="#F1F3F5" stroke="#D9DEE7"/>
+  <text x="1144" y="498" font-family="SimHei" font-size="11" fill="#1F2937">执行失败未重试成功</text>
+  <text x="1144" y="524" font-family="SimHei" font-size="17" fill="#1F2937">2 题</text>
+  <text x="1220" y="524" font-family="SimHei" font-size="11" fill="#6B7280">→ 换路径重试</text>
+
+  <text x="864" y="576" font-family="SimHei" font-size="11" fill="#6B7280">每轮迭代记录：改动点 → 正确率变化（本版本：v1.3.0 提示词 + Schema 红线规则）</text>
+  <text x="864" y="600" font-family="SimHei" font-size="11" fill="#6B7280">对比上一批次：86.7%（+4.2pp）· 回归失败题 1 道（q087）</text>
+
+  <!-- 逐题结果 -->
+  <rect x="272" y="650" width="1128" height="200" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="678" font-family="SimHei" font-size="14" fill="#1F2937">逐题结果（可筛选：全部 / 错误 / 陷阱题 / 多轮）</text>
+  <rect x="292" y="692" width="1088" height="28" fill="#F1F3F5"/>
+  <text x="302" y="711" font-family="SimHei" font-size="11" fill="#6B7280">题号</text>
+  <text x="372" y="711" font-family="SimHei" font-size="11" fill="#6B7280">问题</text>
+  <text x="762" y="711" font-family="SimHei" font-size="11" fill="#6B7280">题型</text>
+  <text x="862" y="711" font-family="SimHei" font-size="11" fill="#6B7280">路径</text>
+  <text x="942" y="711" font-family="SimHei" font-size="11" fill="#6B7280">结果</text>
+  <text x="1012" y="711" font-family="SimHei" font-size="11" fill="#6B7280">耗时</text>
+  <text x="1092" y="711" font-family="SimHei" font-size="11" fill="#6B7280">错误类型 / 差异</text>
+
+  <text x="302" y="745" font-family="SimHei" font-size="11" fill="#1F2937">q001</text>
+  <text x="372" y="745" font-family="SimHei" font-size="11" fill="#1F2937">全期总用电量是多少</text>
+  <text x="762" y="745" font-family="SimHei" font-size="11" fill="#1F2937">统计</text>
+  <text x="862" y="745" font-family="SimHei" font-size="11" fill="#1F2937">SQL</text>
+  <text x="942" y="745" font-family="SimHei" font-size="11" fill="#0CA678">正确</text>
+  <text x="1012" y="745" font-family="SimHei" font-size="11" fill="#1F2937">3.1s</text>
+  <text x="1092" y="745" font-family="SimHei" font-size="11" fill="#6B7280">—</text>
+  <line x1="292" y1="756" x2="1380" y2="756" stroke="#EEF1F5"/>
+
+  <text x="302" y="779" font-family="SimHei" font-size="11" fill="#1F2937">q042</text>
+  <text x="372" y="779" font-family="SimHei" font-size="11" fill="#1F2937">厨房用电占总用电的比例</text>
+  <text x="762" y="779" font-family="SimHei" font-size="11" fill="#1F2937">结构</text>
+  <text x="862" y="779" font-family="SimHei" font-size="11" fill="#1F2937">SQL</text>
+  <text x="942" y="779" font-family="SimHei" font-size="11" fill="#E03131">错误</text>
+  <text x="1012" y="779" font-family="SimHei" font-size="11" fill="#1F2937">11.4s</text>
+  <text x="1092" y="779" font-family="SimHei" font-size="11" fill="#E03131">数值偏差 2.14% vs 1.99%</text>
+  <line x1="292" y1="790" x2="1380" y2="790" stroke="#EEF1F5"/>
+
+  <text x="302" y="813" font-family="SimHei" font-size="11" fill="#1F2937">q087</text>
+  <text x="372" y="813" font-family="SimHei" font-size="11" fill="#1F2937">各年份结构占比（陷阱题）</text>
+  <text x="762" y="813" font-family="SimHei" font-size="11" fill="#1F2937">结构</text>
+  <text x="862" y="813" font-family="SimHei" font-size="11" fill="#1F2937">SQL</text>
+  <text x="942" y="813" font-family="SimHei" font-size="11" fill="#E03131">错误</text>
+  <text x="1012" y="813" font-family="SimHei" font-size="11" fill="#1F2937">12.8s</text>
+  <text x="1092" y="813" font-family="SimHei" font-size="11" fill="#E03131">全期行与年份行重复求和（R7）</text>
+
+  <text x="292" y="840" font-family="SimHei" font-size="11" fill="#6B7280">共 120 题 · 正确 104 · 错误 16 · 点击某行可查看生成 SQL / 代码 / 结果对照</text>
+
+  <circle cx="1000" cy="660" r="11" fill="#E03131"/>
+  <text x="996" y="665" font-family="SimHei" font-size="12" fill="#FFFFFF">3</text>
+</svg>

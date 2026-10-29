@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect x="0" y="0" width="1440" height="900" fill="#F5F7FA"/>
+
+  <rect x="0" y="0" width="1440" height="56" fill="#FFFFFF"/>
+  <line x1="0" y1="56" x2="1440" y2="56" stroke="#D9DEE7"/>
+  <rect x="20" y="16" width="24" height="24" rx="6" fill="#1D4ED8"/>
+  <text x="54" y="34" font-family="SimHei" font-size="18" fill="#1F2937">智电析报</text>
+  <text x="700" y="34" font-family="SimHei" font-size="12" fill="#6B7280">对话工作台</text>
+  <text x="800" y="34" font-family="SimHei" font-size="12" fill="#6B7280">报表管理</text>
+  <text x="888" y="34" font-family="SimHei" font-size="12" fill="#6B7280">评测中心</text>
+  <text x="976" y="34" font-family="SimHei" font-size="12" fill="#1D4ED8">个人中心</text>
+
+  <text x="272" y="96" font-family="SimHei" font-size="20" fill="#1F2937">个人中心</text>
+  <text x="272" y="120" font-family="SimHei" font-size="12" fill="#6B7280">管理账号信息、查看我的数据统计与分析记录</text>
+
+  <!-- 账号信息 -->
+  <rect x="272" y="140" width="440" height="300" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="170" font-family="SimHei" font-size="14" fill="#1F2937">账号信息</text>
+  <circle cx="324" cy="216" r="24" fill="#E8EFFD" stroke="#1D4ED8"/>
+  <text x="312" y="224" font-family="SimHei" font-size="18" fill="#1D4ED8">陈</text>
+  <text x="364" y="212" font-family="SimHei" font-size="14" fill="#1F2937">能耗管理员</text>
+  <text x="364" y="232" font-family="SimHei" font-size="11" fill="#6B7280">chen_admin · 注册于 2026-09-15</text>
+
+  <line x1="292" y1="264" x2="692" y2="264" stroke="#EEF1F5"/>
+  <text x="292" y="292" font-family="SimHei" font-size="11" fill="#6B7280">用户名</text>
+  <text x="392" y="292" font-family="SimHei" font-size="11" fill="#1F2937">chen_admin</text>
+  <text x="292" y="320" font-family="SimHei" font-size="11" fill="#6B7280">显示名称</text>
+  <text x="392" y="320" font-family="SimHei" font-size="11" fill="#1F2937">能耗管理员</text>
+  <text x="292" y="348" font-family="SimHei" font-size="11" fill="#6B7280">最近登录</text>
+  <text x="392" y="348" font-family="SimHei" font-size="11" fill="#1F2937">2026-09-15 09:12（本机 · 局域网）</text>
+  <text x="292" y="376" font-family="SimHei" font-size="11" fill="#6B7280">密码</text>
+  <text x="392" y="376" font-family="SimHei" font-size="11" fill="#1F2937">••••••••  已加密存储（bcrypt）</text>
+
+  <rect x="292" y="396" width="104" height="30" rx="6" fill="#FFFFFF" stroke="#1D4ED8"/>
+  <text x="304" y="415" font-family="SimHei" font-size="11" fill="#1D4ED8">修改密码</text>
+  <rect x="408" y="396" width="104" height="30" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="420" y="415" font-family="SimHei" font-size="11" fill="#1F2937">编辑资料</text>
+
+  <circle cx="696" cy="152" r="11" fill="#E03131"/>
+  <text x="692" y="157" font-family="SimHei" font-size="12" fill="#FFFFFF">1</text>
+
+  <!-- 数据统计 -->
+  <rect x="732" y="140" width="668" height="300" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="752" y="170" font-family="SimHei" font-size="14" fill="#1F2937">我的数据统计</text>
+
+  <rect x="752" y="188" width="152" height="88" rx="8" fill="#F8FAFC" stroke="#D9DEE7"/>
+  <text x="768" y="214" font-family="SimHei" font-size="11" fill="#6B7280">对话会话</text>
+  <text x="768" y="250" font-family="SimHei" font-size="22" fill="#1F2937">12</text>
+
+  <rect x="920" y="188" width="152" height="88" rx="8" fill="#F8FAFC" stroke="#D9DEE7"/>
+  <text x="936" y="214" font-family="SimHei" font-size="11" fill="#6B7280">分析记录</text>
+  <text x="936" y="250" font-family="SimHei" font-size="22" fill="#1F2937">86</text>
+
+  <rect x="1088" y="188" width="152" height="88" rx="8" fill="#F8FAFC" stroke="#D9DEE7"/>
+  <text x="1104" y="214" font-family="SimHei" font-size="11" fill="#6B7280">上传报表</text>
+  <text x="1104" y="250" font-family="SimHei" font-size="22" fill="#1F2937">1</text>
+
+  <rect x="1256" y="188" width="128" height="88" rx="8" fill="#F8FAFC" stroke="#D9DEE7"/>
+  <text x="1272" y="214" font-family="SimHei" font-size="11" fill="#6B7280">平均耗时</text>
+  <text x="1272" y="250" font-family="SimHei" font-size="22" fill="#1F2937">6.4s</text>
+
+  <text x="752" y="308" font-family="SimHei" font-size="11" fill="#6B7280">近 7 天分析次数（柱状小图）</text>
+  <rect x="752" y="320" width="632" height="1" fill="#EEF1F5"/>
+  <rect x="760" y="384" width="34" height="26" rx="3" fill="#BFD3FF"/>
+  <rect x="822" y="368" width="34" height="42" rx="3" fill="#BFD3FF"/>
+  <rect x="884" y="352" width="34" height="58" rx="3" fill="#1D4ED8"/>
+  <rect x="946" y="376" width="34" height="34" rx="3" fill="#BFD3FF"/>
+  <rect x="1008" y="360" width="34" height="50" rx="3" fill="#BFD3FF"/>
+  <rect x="1070" y="390" width="34" height="20" rx="3" fill="#BFD3FF"/>
+  <rect x="1132" y="344" width="34" height="66" rx="3" fill="#1D4ED8"/>
+  <text x="1264" y="400" font-family="SimHei" font-size="11" fill="#6B7280">09-09 → 09-15</text>
+
+  <circle cx="1392" cy="152" r="11" fill="#E03131"/>
+  <text x="1388" y="157" font-family="SimHei" font-size="12" fill="#FFFFFF">2</text>
+
+  <!-- 我的记录 -->
+  <rect x="272" y="460" width="828" height="270" rx="10" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="292" y="488" font-family="SimHei" font-size="14" fill="#1F2937">我的分析记录</text>
+  <rect x="820" y="470" width="120" height="26" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="832" y="488" font-family="SimHei" font-size="11" fill="#1F2937">按关键词搜索</text>
+  <rect x="952" y="470" width="126" height="26" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="964" y="488" font-family="SimHei" font-size="11" fill="#1F2937">近 30 天 ▾</text>
+
+  <rect x="292" y="504" width="788" height="28" fill="#F1F3F5"/>
+  <text x="302" y="523" font-family="SimHei" font-size="11" fill="#6B7280">时间</text>
+  <text x="422" y="523" font-family="SimHei" font-size="11" fill="#6B7280">问题</text>
+  <text x="762" y="523" font-family="SimHei" font-size="11" fill="#6B7280">报表</text>
+  <text x="862" y="523" font-family="SimHei" font-size="11" fill="#6B7280">状态</text>
+  <text x="942" y="523" font-family="SimHei" font-size="11" fill="#6B7280">耗时</text>
+  <text x="1012" y="523" font-family="SimHei" font-size="11" fill="#6B7280">操作</text>
+
+  <text x="302" y="556" font-family="SimHei" font-size="11" fill="#1F2937">09-15 14:22</text>
+  <text x="422" y="556" font-family="SimHei" font-size="11" fill="#1F2937">先看全年用电趋势，只看周末的，再按月汇总</text>
+  <text x="762" y="556" font-family="SimHei" font-size="11" fill="#1F2937">日报</text>
+  <text x="862" y="556" font-family="SimHei" font-size="11" fill="#0CA678">成功</text>
+  <text x="942" y="556" font-family="SimHei" font-size="11" fill="#1F2937">5.1s</text>
+  <text x="1012" y="556" font-family="SimHei" font-size="11" fill="#1D4ED8">查看 重跑 删除</text>
+  <line x1="292" y1="568" x2="1080" y2="568" stroke="#EEF1F5"/>
+
+  <text x="302" y="592" font-family="SimHei" font-size="11" fill="#1F2937">09-15 11:08</text>
+  <text x="422" y="592" font-family="SimHei" font-size="11" fill="#1F2937">厨房用电占总用电的比例</text>
+  <text x="762" y="592" font-family="SimHei" font-size="11" fill="#1F2937">结构</text>
+  <text x="862" y="592" font-family="SimHei" font-size="11" fill="#E03131">失败</text>
+  <text x="942" y="592" font-family="SimHei" font-size="11" fill="#1F2937">11.4s</text>
+  <text x="1012" y="592" font-family="SimHei" font-size="11" fill="#1D4ED8">查看 重跑 删除</text>
+  <line x1="292" y1="604" x2="1080" y2="604" stroke="#EEF1F5"/>
+
+  <text x="302" y="628" font-family="SimHei" font-size="11" fill="#1F2937">09-14 20:05</text>
+  <text x="422" y="628" font-family="SimHei" font-size="11" fill="#1F2937">哪个月用电量最高</text>
+  <text x="762" y="628" font-family="SimHei" font-size="11" fill="#1F2937">月报</text>
+  <text x="862" y="628" font-family="SimHei" font-size="11" fill="#0CA678">成功</text>
+  <text x="942" y="628" font-family="SimHei" font-size="11" fill="#1F2937">3.7s</text>
+  <text x="1012" y="628" font-family="SimHei" font-size="11" fill="#1D4ED8">查看 重跑 删除</text>
+  <line x1="292" y1="640" x2="1080" y2="640" stroke="#EEF1F5"/>
+
+  <text x="302" y="664" font-family="SimHei" font-size="11" fill="#1F2937">09-14 16:41</text>
+  <text x="422" y="664" font-family="SimHei" font-size="11" fill="#1F2937">有哪些用电异常日</text>
+  <text x="762" y="664" font-family="SimHei" font-size="11" fill="#1F2937">日报</text>
+  <text x="862" y="664" font-family="SimHei" font-size="11" fill="#0CA678">成功</text>
+  <text x="942" y="664" font-family="SimHei" font-size="11" fill="#1F2937">7.9s</text>
+  <text x="1012" y="664" font-family="SimHei" font-size="11" fill="#1D4ED8">查看 重跑 删除</text>
+
+  <text x="292" y="704" font-family="SimHei" font-size="11" fill="#6B7280">共 86 条记录 · 每页 20 条</text>
+  <rect x="1044" y="688" width="36" height="22" rx="4" fill="#EEF1F5"/>
+  <text x="1054" y="704" font-family="SimHei" font-size="11" fill="#1F2937">上一页</text>
+
+  <circle cx="1100" cy="470" r="11" fill="#E03131"/>
+  <text x="1096" y="475" font-family="SimHei" font-size="12" fill="#FFFFFF">3</text>
+
+  <!-- 危险操作区 -->
+  <rect x="1120" y="460" width="280" height="270" rx="10" fill="#FFFFFF" stroke="#E03131"/>
+  <text x="1140" y="488" font-family="SimHei" font-size="14" fill="#E03131">数据与隐私</text>
+  <text x="1140" y="516" font-family="SimHei" font-size="11" fill="#6B7280">你的上传文件与数据库均保存在本机，</text>
+  <text x="1140" y="534" font-family="SimHei" font-size="11" fill="#6B7280">不同账号之间互相不可见。</text>
+
+  <rect x="1140" y="556" width="240" height="56" rx="6" fill="#FFF5F5" stroke="#E03131"/>
+  <text x="1152" y="578" font-family="SimHei" font-size="11" fill="#E03131">清空我的历史记录</text>
+  <text x="1152" y="598" font-family="SimHei" font-size="11" fill="#6B7280">删除全部会话与分析记录（不可恢复）</text>
+
+  <rect x="1140" y="624" width="240" height="56" rx="6" fill="#FFF5F5" stroke="#E03131"/>
+  <text x="1152" y="646" font-family="SimHei" font-size="11" fill="#E03131">删除账号</text>
+  <text x="1152" y="666" font-family="SimHei" font-size="11" fill="#6B7280">级联删除账号下的报表与记录</text>
+
+  <text x="1140" y="704" font-family="SimHei" font-size="11" fill="#6B7280">两项操作均需二次确认并输入用户名</text>
+
+  <circle cx="1392" cy="470" r="11" fill="#E03131"/>
+  <text x="1388" y="475" font-family="SimHei" font-size="12" fill="#FFFFFF">4</text>
+
+  <text x="272" y="772" font-family="SimHei" font-size="11" fill="#6B7280">说明：退出登录仅清除本地 token，不影响账号数据；安全相关操作（越权访问、危险代码拦截）会写入审计日志，不随记录清空而删除。</text>
+</svg>

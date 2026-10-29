@@ -1,0 +1,101 @@
+{
+  "caliber_version": "caliber-v1.0",
+  "generated_at": "2026-09-15T11:06:29",
+  "generator": "01.code/scripts/01_build_reports.py",
+  "source_file": "household_power_consumption.txt",
+  "config": {
+    "period_hours": {
+      "valley": [
+        0,
+        7
+      ],
+      "flat": [
+        8,
+        17
+      ],
+      "peak": [
+        18,
+        23
+      ]
+    },
+    "anomaly": {
+      "window_days": 30,
+      "min_periods": 7,
+      "sigma": 3.0,
+      "window_months": 3,
+      "voltage_range": [
+        210.0,
+        250.0
+      ],
+      "rules": [
+        "rolling3sigma",
+        "no_active_data",
+        "zero_or_negative_power",
+        "voltage_out_of_range",
+        "peak_ratio_anomaly"
+      ]
+    },
+    "precision": {
+      "kwh": 6,
+      "ratio": 6,
+      "power": 3,
+      "voltage": 3,
+      "intensity": 3
+    },
+    "csv_encoding": "utf-8-sig"
+  },
+  "row_counts": {
+    "minute": 2075259,
+    "hourly": 34589,
+    "daily": 1442,
+    "monthly": 48,
+    "structure": 6
+  },
+  "time_range": {
+    "start": "2006-12-16 17:24:00",
+    "end": "2010-11-26 21:02:00"
+  },
+  "outputs": [
+    "report_hourly.csv",
+    "report_daily.csv",
+    "report_monthly.csv",
+    "report_energy_structure.csv"
+  ],
+  "checks": {
+    "A1_levels_equal": {
+      "hourly_total_kwh": 37283.7477,
+      "daily_total_kwh": 37283.7477,
+      "monthly_total_kwh": 37283.7477,
+      "max_gap_kwh": 0.0,
+      "passed": true
+    },
+    "A2_structure_closed": {
+      "max_abs_error_kwh": 7.275957614183426e-12,
+      "passed": true
+    },
+    "A3_time_closed": {
+      "max_abs_error_kwh": 1.8189894035458565e-12,
+      "passed": true
+    },
+    "A4_unmetered_share": {
+      "unmetered_kwh": 19088.4147,
+      "total_kwh": 37283.7477,
+      "share": 0.511977,
+      "note": "仅记录，不作硬阈值（PRD 8.11）"
+    },
+    "A5_row_counts": {
+      "minute_rows": 2075259,
+      "minute_rows_expected": 2075259,
+      "hourly_rows": 34589,
+      "daily_rows": 1442,
+      "monthly_rows": 48,
+      "structure_rows": 6,
+      "passed": true
+    }
+  },
+  "notes": [
+    "A1–A3 校验基于未舍入的聚合结果；CSV 按 PRD 8.10 精度舍入，仅影响可读性。",
+    "分钟级明细仅入库 reports.db，不导出 CSV（PRD 7.3）。",
+    "三级总量相等由同一分钟级数据源聚合保证。"
+  ]
+}

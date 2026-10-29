@@ -1,0 +1,103 @@
+{
+  "source_rows": 2075259,
+  "missing_rows": 25979,
+  "missing_ratio": 0.012518,
+  "missing_by_column": {
+    "Global_active_power": 25979,
+    "Global_reactive_power": 25979,
+    "Voltage": 25979,
+    "Global_intensity": 25979,
+    "Sub_metering_1": 25979,
+    "Sub_metering_2": 25979,
+    "Sub_metering_3": 25979
+  },
+  "partially_missing_rows": 0,
+  "negative_masked": {
+    "Global_active_power": 0,
+    "Global_reactive_power": 0,
+    "Sub_metering_1": 0,
+    "Sub_metering_2": 0,
+    "Sub_metering_3": 0
+  },
+  "unparsable_datetime": 0,
+  "cleaned_rows": 2075259,
+  "time_start": "2006-12-16 17:24:00",
+  "time_end": "2010-11-26 21:02:00",
+  "expected_minutes_by_span": 2075259,
+  "time_axis_gap": 0,
+  "duplicate_timestamps": 0,
+  "voltage_out_of_range_minutes": 4010,
+  "active_minutes": 2049280,
+  "active_minutes_ratio": 0.987482,
+  "numeric_range": {
+    "gap_kw": {
+      "min": 0.076,
+      "max": 11.122,
+      "mean": 1.091615
+    },
+    "gap_kwh": {
+      "min": 0.001267,
+      "max": 0.185367,
+      "mean": 0.018194
+    },
+    "sm1_kwh": {
+      "min": 0.0,
+      "max": 0.088,
+      "mean": 0.001122
+    },
+    "sm2_kwh": {
+      "min": 0.0,
+      "max": 0.08,
+      "mean": 0.001299
+    },
+    "sm3_kwh": {
+      "min": 0.0,
+      "max": 0.031,
+      "mean": 0.006458
+    },
+    "unmetered_kwh": {
+      "min": -0.0024,
+      "max": 0.124833,
+      "mean": 0.009315
+    },
+    "voltage": {
+      "min": 223.2,
+      "max": 254.15,
+      "mean": 240.839858
+    },
+    "intensity": {
+      "min": 0.2,
+      "max": 48.4,
+      "mean": 4.627759
+    },
+    "reactive_power_kw": {
+      "min": 0.0,
+      "max": 1.39,
+      "mean": 0.123714
+    }
+  },
+  "generated_at": "2026-09-15T11:06:29",
+  "caliber_version": "caliber-v1.0",
+  "daily": {
+    "rows": 1442,
+    "coverage_min": 0.0,
+    "coverage_mean": 0.986901,
+    "days_full_coverage": 1358,
+    "days_with_zero_active": 9,
+    "anomaly_days": 81,
+    "partial_days": 2,
+    "anomaly_rule_counts": {
+      "rolling3sigma_high": 13,
+      "rolling3sigma_low": 12,
+      "no_active_data": 9,
+      "zero_or_negative_power": 0,
+      "voltage_out_of_range": 34,
+      "peak_ratio_anomaly": 17
+    }
+  },
+  "monthly": {
+    "rows": 48,
+    "anomaly_months": 9,
+    "partial_months": 2
+  }
+}

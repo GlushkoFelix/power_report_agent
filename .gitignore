@@ -1,0 +1,52 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── 虚拟环境 ────────────────────────────────────────────────────────────────
+.venv/
+venv/
+
+# ── 环境变量（含密钥，禁止提交）──────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# ── 数据库与运行期产物 ──────────────────────────────────────────────────────
+# 数据面 reports.db（约 400 MB）与控制面 power_agent.db 均可由 01.code/scripts 重建
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+02.data/tmp/
+02.data/logs/
+02.data/uploads/
+02.data/backup/
+
+# ── 原始数据集（133 MB，超出 GitHub 单文件 100 MB 限制，获取方式见 README）──
+household_power_consumption.txt
+
+# ── 前端 ────────────────────────────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.tsbuildinfo
+*.local
+
+# ── 日志与临时文件 ──────────────────────────────────────────────────────────
+*.log
+*.bak
+*.bak_*
+~$*
+*.tmp
+
+# ── IDE / 本机工具配置 ──────────────────────────────────────────────────────
+.vscode/
+.idea/
+.workbuddy/

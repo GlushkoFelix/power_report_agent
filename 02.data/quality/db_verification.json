@@ -1,0 +1,32 @@
+{
+  "checked_at": "2026-09-15T15:06:20",
+  "A1_levels_equal": {
+    "hourly_total_kwh": 37283.7477,
+    "daily_total_kwh": 37283.7477,
+    "monthly_total_kwh": 37283.7477,
+    "max_gap_kwh": 0.0,
+    "passed": true
+  },
+  "A2_structure_closed": {
+    "max_abs_error_kwh": 7.275957614183426e-12,
+    "passed": true
+  },
+  "A3_time_closed": {
+    "max_abs_error_kwh": 1.8189894035458565e-12,
+    "passed": true
+  },
+  "A4_unmetered_share": {
+    "unmetered_kwh": 19088.4147,
+    "total_kwh": 37283.7477,
+    "share": 0.511977,
+    "note": "仅记录，不作硬阈值"
+  },
+  "A5_row_counts": {
+    "report_minute": 2075259,
+    "report_hourly": 34589,
+    "report_daily": 1442,
+    "report_monthly": 48,
+    "report_energy_structure": 6,
+    "passed": true
+  }
+}

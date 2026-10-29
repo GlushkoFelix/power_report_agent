@@ -1,0 +1,57 @@
+# ============================================================================
+# 智电析报 · 后端依赖清单
+# 环境：Windows 11 + Python 3.13.12（PRD 10.3 写「Python 3.12+」，本机实测 3.13.12）
+# 虚拟环境：全项目统一复用「项目根 .venv」，不单独建 backend/.venv
+# 安装：
+#   cd 01.code\backend
+#   ..\..\.venv\Scripts\python.exe -m pip install -r requirements.txt
+# 说明：下列版本为实测安装版本（pip list 回填；2026-09-15 首版，2026-10-13 补登 LangGraph 编排两项）。
+#       依赖分层与取舍理由见 PRD 10.3 与架构文档 6.3（含"依赖与实现的偏差"如实记录）。
+# ============================================================================
+
+# ── Web 框架与 ASGI ─────────────────────────────────────────────────────────
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+python-multipart==0.0.32          # 报表 CSV 文件上传
+sse-starlette==3.4.11             # 对话分析 SSE 流式响应
+orjson==3.12.0                    # 高性能 JSON 序列化
+
+# ── 配置 ────────────────────────────────────────────────────────────────────
+pydantic-settings==2.15.0         # .env 驱动的配置加载
+python-dotenv==1.2.3
+
+# ── 数据库（两库：power_agent.db 读写 / reports.db 只读）─────────────────────
+SQLAlchemy==2.0.53
+aiosqlite==0.22.1
+
+# ── 鉴权 ────────────────────────────────────────────────────────────────────
+bcrypt==5.0.0                     # 密码哈希（直调；passlib 已停更且与 bcrypt 5.x 不兼容）
+PyJWT==2.14.0                     # JWT 签发与校验
+
+# ── Agent 与执行沙箱（交付物 4 起，见 PRD 10.3）─────────────────────────────
+sqlglot==30.18.0                  # SQL 只读白名单守卫（按语法树判定，ADR-004）
+json-repair==0.63.4               # 模型输出 JSON 容错修复（三层解析的第二层）
+#   注：pandas==3.0.5、numpy==2.5.3 已随交付物 2（数据层）安装，此处不重复。
+#   注：**未引入 `openai` SDK** —— 百炼的 OpenAI 兼容端点用已装的 `httpx` 直调
+#       （`app/core/llm_client.py`）；装 openai 会额外拖进 httpx2/httpcore2/jiter/truststore
+#       四个包，而本项目只用得到一次普通 JSON POST（与 PRD 10.3 的差异已在文档中记档）。
+#   注：LangGraph 已于 2026-10-13 接入并成为**默认编排**（原"未引入"口径作废），见下节。
+
+# ── 编排（LangGraph 状态图，2026-10-13 接入；见架构文档 ADR-021）─────────────
+langgraph==1.2.14                 # 状态图编排：13 节点 + 条件边（重写环 / 形态自检环 / 澄清环）
+langgraph-checkpoint-sqlite==3.1.2  # 会话级检查点（AsyncSqliteSaver，thread_id = 会话编号）
+#   注：import 名与包名不同——代码里 `from langgraph.graph import StateGraph`、
+#       `from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver`。
+#   注：连带影响（实测，已记入架构文档 6.3）：`langgraph-checkpoint` 随之升到 **4.3.0**、
+#       带入 `sqlite-vec`；`websockets` 由 17.1 **降级**到 16.1.1；并带入 `httpx2` / `httpcore2`
+#       （与上面"不引入 openai SDK 以避开 httpx2/httpcore2"的初衷相抵——但功能实测无影响）。
+#   注：检查点表的 DDL **手工纳管**于 `01.code/scripts/sql/power_agent_langgraph.sql`
+#       （不让框架 `setup()` 自己建表，见数据库设计文档 2.2 原则 2 与 5.11 / 5.12）。
+
+# ── 图表与沙箱（交付物 4 第三/五批落地，2026-09-17 回填实测版本）─────────────
+plotly==7.0.0                     # Plotly figure JSON 生成（连带 narwhals，见下）
+narwhals==2.26.0                  # plotly 7.x 的运行时依赖（随 plotly 自动安装，显式登记）
+RestrictedPython==8.5             # 已装；沙箱实际执行为「AST 预检 + 子进程隔离」，
+                                  #   本库保留为进程内第三道防线候选（未接入，见 PRD F2.3 与 ADR-005）
+#   注：**kaleido 未装（预留）** —— 服务端图片导出 GET …/chart.png 返回 501；
+#       装上后无需改码即生效（chart_service.export_chart_png 已写好探测与调用）。

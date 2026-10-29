@@ -1,0 +1,15 @@
+* text=auto
+
+# Windows 脚本必须保持 CRLF，否则 cmd / PowerShell 解析异常
+*.bat  text eol=crlf
+*.ps1  text eol=crlf
+
+# CSV 由 pandas 以 utf-8-sig 生成，禁止 Git 改写换行与编码
+*.csv  -text
+
+# 二进制
+*.png  binary
+*.jpg  binary
+*.svg  text
+*.pptx binary
+*.docx binary

@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * 全局设计令牌（UIUX 第 4 章）。
+ *
+ * 全部颜色以 **CSS 变量** 落地：亮/暗主题只替换变量值，
+ * Tailwind（`tailwind.config.js` 的 colors 映射）与手写样式共用同一套变量，
+ * 因此暗色模式不需要写 `dark:` 前缀，也不存在两套色值漂移。
+ *
+ * 注意：**语义色（峰/平/谷/未计量/异常/缺采）与用途色板（厨房/洗衣房/热水空调）严禁混用**
+ * （UIUX 4.2 / PRD 红线 R3），两套变量各自成组，视觉上刻意取不同色相。
+ */
+
+:root {
+  /* 主色 */
+  --c-primary: #1d4ed8;
+  --c-primary-light: #e8effd;
+  --c-primary-hover: #d6e2ff;
+  --c-primary-grad-from: #1d4ed8;
+  --c-primary-grad-to: #0b3aa8;
+
+  /* 文字 */
+  --c-text-main: #1f2937;
+  --c-text-sub: #6b7280;
+  --c-text-disabled: #adb5bd;
+
+  /* 背景与描边 */
+  --c-bg-page: #f5f7fa;
+  --c-bg-card: #ffffff;
+  --c-bg-weak: #f1f3f5;
+  --c-bg-weak2: #f8fafc;
+  --c-line: #d9dee7;
+  --c-line-soft: #eef1f5;
+
+  /* 语义色（时段拆分专用） */
+  --c-peak: #e8590c;
+  --c-flat: #1d4ed8;
+  --c-valley: #0ca678;
+  --c-unmetered: #7048e8;
+  --c-anomaly: #e03131;
+  --c-missing: #adb5bd;
+  /* 语义色的浅底（标签/提示条背景） */
+  --c-peak-bg: #fdf0e8;
+  --c-valley-bg: #e7f7f1;
+  --c-anomaly-bg: #fdeceb;
+  --c-missing-bg: #f1f3f5;
+  --c-neutral-bg: #f8fafc;
+
+  /* 用途色板（按用途拆分专用，与语义色互不共用） */
+  --c-use-kitchen: #0b7285;
+  --c-use-laundry: #15aabf;
+  --c-use-hvac: #4c6ef5;
+
+  /* 图表主题（前端注入，后端 figure 不写主题色 —— UIUX 7.2） */
+  --c-chart-paper: #ffffff;
+  --c-chart-plot: #ffffff;
+  --c-chart-font: #1f2937;
+  --c-chart-grid: #eef1f5;
+}
+
+:root[data-theme='dark'] {
+  --c-primary: #4c74e6;
+  --c-primary-light: #1e2a45;
+  --c-primary-hover: #26365a;
+  --c-primary-grad-from: #1a3f9e;
+  --c-primary-grad-to: #0a2a7a;
+
+  --c-text-main: #e5e9f0;
+  --c-text-sub: #9aa4b2;
+  --c-text-disabled: #6b7280;
+
+  --c-bg-page: #141821;
+  --c-bg-card: #1c2230;
+  --c-bg-weak: #232a3a;
+  --c-bg-weak2: #1f2634;
+  --c-line: #313a4d;
+  --c-line-soft: #2a3242;
+
+  /* 暗色下语义色保持色相、亮度 +8~12%（UIUX 4.2） */
+  --c-peak: #ff7a33;
+  --c-flat: #5b82ee;
+  --c-valley: #2fd4a0;
+  --c-unmetered: #8f6bf0;
+  --c-anomaly: #ff5a5a;
+  --c-missing: #8b94a3;
+  --c-peak-bg: #3a2718;
+  --c-valley-bg: #16342c;
+  --c-anomaly-bg: #3a1f1f;
+  --c-missing-bg: #232a3a;
+  --c-neutral-bg: #1f2634;
+
+  --c-use-kitchen: #12909f;
+  --c-use-laundry: #2fc0d4;
+  --c-use-hvac: #6f8bff;
+
+  --c-chart-paper: #1c2230;
+  --c-chart-plot: #1c2230;
+  --c-chart-font: #e5e9f0;
+  --c-chart-grid: #2a3242;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* 文档层永不滚动（v1.19.13）。
+   滚动交给**应用外壳自身的滚动区**（`MainLayout` 的 <main>、登录页容器），文档层只保留 100vh。
+   原因（用户实测反馈）：Tooltip 这类浮层默认渲染到 `body`，当触发元素靠近视口底部时，
+   浮层会把**文档高度撑大** → 文档滚动条闪现一下 → 视口宽度变化 → 页面横向抖一下，
+   滚轮一停浮层归位、滚动条又消失（表现为"悬停提示时滚轮，页面抖一下、滚动条闪现"）。
+   把文档层锁死在高 100% 后，浮层无论如何都不会让文档产生滚动条。 */
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg-page);
+  color: var(--c-text-main);
+  font-family: 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 数字等宽：表格与指标对齐（UIUX 4.3） */
+.zd-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 卡片：描边代替阴影（保持"工程感"，UIUX 4.1） */
+.zd-card {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-line);
+  border-radius: 10px;
+}
+
+/*
+ * 等高卡片里的「表格卡」：卡片撑满所在列、表体占满剩余空间、**分页贴卡片底部**。
+ * 用途：个人中心右栏「我的分析记录」与左栏（账号信息 + 统计 + 危险区）底部对齐——
+ * 只靠"凑每页条数"在别的窗口尺寸/数据量下会再次错位，这里用 flex 结构性对齐：
+ *   列高由两栏中较高者决定（`Row align="stretch"`）→ 本卡填满列 → 分页落到最低处。
+ */
+.zd-fill-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.zd-fill-card > .ant-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  /* 允许子项在空间不足时收缩（否则表格会把卡片顶高、对齐失效） */
+  min-height: 0;
+}
+
+/*
+ * 注意 antd 的 DOM 层级：分页**不在** `.ant-table-wrapper` 之下直接是兄弟，
+ * 而是 `.ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-pagination`，
+ * 所以这条链要逐层 flex 下去，最后用 `margin-top: auto` 把分页顶到最低处
+ * （第一版只 flex 了前两层，分页仍紧跟在表格后面，实测距底 408px 才发现）。
+ */
+.zd-fill-card .ant-table-wrapper,
+.zd-fill-card .ant-table-wrapper > .ant-spin-nested-loading,
+.zd-fill-card .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.zd-fill-card .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-table {
+  flex: 0 0 auto;
+}
+
+.zd-fill-card .ant-table-wrapper > .ant-spin-nested-loading > .ant-spin-container > .ant-pagination {
+  /* 推到卡片底部，与卡片内边距留出呼吸（避免页码压住描边） */
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-top: 8px;
+}
+
+.zd-card-flat {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-line-soft);
+  border-radius: 10px;
+}
+
+/* 弱底区块（表头 / 只读块 / 次级卡片） */
+.zd-weak {
+  background: var(--c-bg-weak);
+}
+
+/* 滚动条：细、低干扰 */
+.zd-scroll {
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.zd-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.zd-scroll::-webkit-scrollbar-thumb {
+  background: var(--c-line);
+  border-radius: 4px;
+}
+.zd-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 焦点可见（UIUX 11：禁止 outline: none） */
+:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 1px;
+}
+
+/* 阶段时间线进行中的脉冲圆点（UIUX 8.2） */
+@keyframes zd-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.35);
+  }
+}
+.zd-pulse {
+  animation: zd-pulse 1.1s ease-in-out infinite;
+}
+
+/* 芯片更新时的 0.3s 高亮闪动（UIUX 8.1：slot 事件到达时） */
+@keyframes zd-chip-flash {
+  0% {
+    background: var(--c-primary);
+    color: #fff;
+  }
+  100% {
+    background: var(--c-primary-light);
+    color: var(--c-primary);
+  }
+}
+.zd-chip-flash {
+  animation: zd-chip-flash 0.3s ease-out 2;
+}
+
+/* 表格行与图表联动的高亮（2s 后由 JS 移除） */
+.zd-row-active > td {
+  background: var(--c-primary-light) !important;
+}
+
+/* AntD 局部对齐本项目规范（圆角 8px 按钮 / 表头弱底 / 行高 36px） */
+.ant-table-thead > tr > th {
+  background: var(--c-bg-weak) !important;
+  font-weight: 600 !important;
+}
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid var(--c-line-soft) !important;
+}

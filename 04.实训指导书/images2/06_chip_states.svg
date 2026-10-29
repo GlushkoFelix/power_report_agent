@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <rect x="0" y="0" width="1280" height="640" fill="#F5F7FA"/>
+  <text x="40" y="56" font-family="SimHei" font-size="20" fill="#1F2937">条件芯片（SlotChip）组件规格</text>
+  <text x="40" y="80" font-family="SimHei" font-size="12" fill="#6B7280">用于展示与编辑当前生效的查询条件，常驻对话区顶部；文本格式「字段：值」，点击进入编辑，点 × 清除</text>
+
+  <!-- 1 默认 -->
+  <text x="40" y="128" font-family="SimHei" font-size="12" fill="#6B7280">① 默认态</text>
+  <rect x="40" y="140" width="112" height="26" rx="13" fill="#E8EFFD" stroke="#1D4ED8"/>
+  <text x="54" y="157" font-family="SimHei" font-size="12" fill="#1D4ED8">时间：全期 ×</text>
+  <text x="168" y="157" font-family="SimHei" font-size="11" fill="#6B7280">高 26px · 圆角 13px · 内边距 8px · 字号 12px</text>
+
+  <!-- 2 悬停 -->
+  <text x="40" y="204" font-family="SimHei" font-size="12" fill="#6B7280">② 悬停 / 聚焦态</text>
+  <rect x="40" y="216" width="128" height="26" rx="13" fill="#D6E2FF" stroke="#1D4ED8" stroke-width="2"/>
+  <text x="54" y="233" font-family="SimHei" font-size="12" fill="#1D4ED8">粒度：月 ×</text>
+  <text x="184" y="233" font-family="SimHei" font-size="11" fill="#6B7280">底色加深一档 · 描边加粗到 2px · 鼠标手势 pointer</text>
+
+  <!-- 3 编辑中 -->
+  <text x="40" y="280" font-family="SimHei" font-size="12" fill="#6B7280">③ 编辑中（气泡展开）</text>
+  <rect x="40" y="292" width="140" height="26" rx="13" fill="#1D4ED8"/>
+  <text x="54" y="309" font-family="SimHei" font-size="12" fill="#FFFFFF">指标：总电量 ×</text>
+  <text x="196" y="309" font-family="SimHei" font-size="11" fill="#6B7280">芯片切换为主色实心，同时弹出编辑气泡</text>
+
+  <!-- 4 禁用 -->
+  <text x="40" y="356" font-family="SimHei" font-size="12" fill="#6B7280">④ 不可用态（分析执行中禁用编辑）</text>
+  <rect x="40" y="368" width="140" height="26" rx="13" fill="#F1F3F5" stroke="#D9DEE7"/>
+  <text x="54" y="385" font-family="SimHei" font-size="12" fill="#ADB5BD">筛选：仅周末 ×</text>
+  <text x="196" y="385" font-family="SimHei" font-size="11" fill="#6B7280">灰底灰字 · 不响应点击 · 悬浮提示“生成中，请稍候”</text>
+
+  <!-- 编辑气泡 -->
+  <rect x="40" y="424" width="452" height="176" rx="10" fill="#FFFFFF" stroke="#1D4ED8"/>
+  <text x="60" y="452" font-family="SimHei" font-size="13" fill="#1F2937">编辑气泡（以「时间范围」为例）</text>
+
+  <rect x="60" y="466" width="196" height="30" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="74" y="486" font-family="SimHei" font-size="11" fill="#1F2937">2006-12-16</text>
+  <text x="268" y="486" font-family="SimHei" font-size="12" fill="#6B7280">→</text>
+  <rect x="292" y="466" width="180" height="30" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="306" y="486" font-family="SimHei" font-size="11" fill="#1F2937">2010-11-26</text>
+
+  <rect x="60" y="508" width="88" height="26" rx="6" fill="#E8EFFD" stroke="#1D4ED8"/>
+  <text x="72" y="525" font-family="SimHei" font-size="11" fill="#1D4ED8">全期</text>
+  <rect x="160" y="508" width="88" height="26" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="172" y="525" font-family="SimHei" font-size="11" fill="#1F2937">今年</text>
+  <rect x="260" y="508" width="88" height="26" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="272" y="525" font-family="SimHei" font-size="11" fill="#1F2937">近 30 天</text>
+  <rect x="360" y="508" width="112" height="26" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="372" y="525" font-family="SimHei" font-size="11" fill="#1F2937">自定义区间</text>
+
+  <text x="60" y="556" font-family="SimHei" font-size="11" fill="#E8590C">⚠ 校验：结束日期需晚于起始日期；超出报表时间范围时将自动截断并提示</text>
+
+  <rect x="60" y="568" width="76" height="26" rx="6" fill="#1D4ED8"/>
+  <text x="84" y="585" font-family="SimHei" font-size="11" fill="#FFFFFF">应用</text>
+  <rect x="148" y="568" width="76" height="26" rx="6" fill="#FFFFFF" stroke="#D9DEE7"/>
+  <text x="172" y="585" font-family="SimHei" font-size="11" fill="#1F2937">取消</text>
+
+  <circle cx="474" cy="436" r="11" fill="#E03131"/>
+  <text x="470" y="441" font-family="SimHei" font-size="12" fill="#FFFFFF">1</text>
+
+  <!-- 字段映射表 -->
+  <text x="528" y="424" font-family="SimHei" font-size="13" fill="#1F2937">字段 → 编辑控件映射</text>
+  <rect x="528" y="436" width="712" height="28" fill="#F1F3F5"/>
+  <text x="540" y="455" font-family="SimHei" font-size="11" fill="#6B7280">字段</text>
+  <text x="636" y="455" font-family="SimHei" font-size="11" fill="#6B7280">控件</text>
+  <text x="836" y="455" font-family="SimHei" font-size="11" fill="#6B7280">取值示例</text>
+  <text x="1076" y="455" font-family="SimHei" font-size="11" fill="#6B7280">清除后行为</text>
+
+  <text x="540" y="484" font-family="SimHei" font-size="11" fill="#1F2937">time_range</text>
+  <text x="636" y="484" font-family="SimHei" font-size="11" fill="#1F2937">日期区间 + 快捷选项</text>
+  <text x="836" y="484" font-family="SimHei" font-size="11" fill="#1F2937">全期 / 2020-07 / 近 30 天</text>
+  <text x="1076" y="484" font-family="SimHei" font-size="11" fill="#6B7280">回到默认「全期」</text>
+  <line x1="528" y1="496" x2="1240" y2="496" stroke="#EEF1F5"/>
+
+  <text x="540" y="516" font-family="SimHei" font-size="11" fill="#1F2937">granularity</text>
+  <text x="636" y="516" font-family="SimHei" font-size="11" fill="#1F2937">下拉单选</text>
+  <text x="836" y="516" font-family="SimHei" font-size="11" fill="#1F2937">日 / 月 / 年</text>
+  <text x="1076" y="516" font-family="SimHei" font-size="11" fill="#6B7280">由问题自动推断</text>
+  <line x1="528" y1="528" x2="1240" y2="528" stroke="#EEF1F5"/>
+
+  <text x="540" y="548" font-family="SimHei" font-size="11" fill="#1F2937">metric</text>
+  <text x="636" y="548" font-family="SimHei" font-size="11" fill="#1F2937">下拉单选（带单位）</text>
+  <text x="836" y="548" font-family="SimHei" font-size="11" fill="#1F2937">总电量 kWh / 峰段电量</text>
+  <text x="1076" y="548" font-family="SimHei" font-size="11" fill="#6B7280">不可清除（必填）</text>
+  <line x1="528" y1="560" x2="1240" y2="560" stroke="#EEF1F5"/>
+
+  <text x="540" y="580" font-family="SimHei" font-size="11" fill="#1F2937">filters</text>
+  <text x="636" y="580" font-family="SimHei" font-size="11" fill="#1F2937">多选标签 + 开关</text>
+  <text x="836" y="580" font-family="SimHei" font-size="11" fill="#1F2937">仅周末 / 排除不完整周期</text>
+  <text x="1076" y="580" font-family="SimHei" font-size="11" fill="#6B7280">移除该过滤器</text>
+  <line x1="528" y1="592" x2="1240" y2="592" stroke="#EEF1F5"/>
+
+  <text x="540" y="612" font-family="SimHei" font-size="11" fill="#1F2937">compare</text>
+  <text x="636" y="612" font-family="SimHei" font-size="11" fill="#1F2937">下拉单选</text>
+  <text x="836" y="612" font-family="SimHei" font-size="11" fill="#1F2937">同比 / 环比 / 无</text>
+  <text x="1076" y="612" font-family="SimHei" font-size="11" fill="#6B7280">回到「无对比」</text>
+
+  <circle cx="518" cy="140" r="11" fill="#E03131"/>
+  <text x="514" y="145" font-family="SimHei" font-size="12" fill="#FFFFFF">2</text>
+</svg>
