@@ -34,7 +34,7 @@
 | 依赖 | 要求 | 说明 |
 | --- | --- | --- |
 | 操作系统 | Windows 10/11 | 启动脚本是 `.bat` / PowerShell；Linux/macOS 可手动起服务 |
-| Python | 3.12+（本项目在 3.13.12 验证） | 虚拟环境**必须建在仓库根目录下的 `.venv`**，`start.ps1` 按这个路径找解释器 |
+| Python | 3.12+（本项目在 3.13.12 验证） | 虚拟环境**建在仓库根目录下的 `.venv`**（下文所有命令都按这个位置找解释器） |
 | Node.js | 18+（本项目在 26.x 验证） | 只用于前端 |
 
 ### 步骤 1 · 装依赖
@@ -99,18 +99,10 @@ LLM_MODEL_LIGHT=qwen-turbo
 
 ### 步骤 5 · 启动
 
-**一键（推荐）**：
+开两个终端，先起后端再起前端：
 
 ```bash
-start.bat
-```
-
-它会检查 `.venv`、起后端（固定 `8000`）、查 Windows 的 TCP 保留端口段后挑一个可用端口起前端、写端口记录到 `02.data/tmp/_ports.json`，并打开浏览器。停止用 `stop.bat`。
-
-**手动两终端**：
-
-```bash
-# 终端 1：后端（工作目录必须是 01.code\backend）
+# 终端 1：后端（工作目录建议在 01.code\backend）
 cd 01.code\backend
 set PYTHONIOENCODING=utf-8
 ..\..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
@@ -120,11 +112,19 @@ cd 01.code\frontend
 npm run dev
 ```
 
-健康检查：浏览器打开 `http://127.0.0.1:8000/api/v1/system/health`，应返回 `status=healthy`。
+PowerShell 里把 `set PYTHONIOENCODING=utf-8` 换成 `$env:PYTHONIOENCODING="utf-8"`。
+
+健康检查：`http://127.0.0.1:8000/api/v1/system/health` 应返回 `status=healthy`；OpenAPI 文档在 `http://127.0.0.1:8000/docs`。
+
+**想写自己的启动脚本，请把这三件事处理掉**（都是机器相关的坑）：
+
+1. **`.venv` 放在仓库根**：后端与数据脚本按「`01.code` 的上一级」推导数据与库路径，解释器本身可以装在别处，但 `.env` 里 `REPORTS_DB_PATH=02.data/...` 是相对这个根的。
+2. **前端端口可能绑不上**：Windows 会动态保留一批 TCP 端口段（`netsh int ipv4 show excludedportrange protocol=tcp`），落进保留段的端口 `bind` 直接报 `EACCES`。`vite.config.ts` 是 `port: 5173` + `strictPort: false`，撞上会自动换端口，**以控制台打印的端口为准**。
+3. **后端只能单 worker**：SQLite + 进程内 `asyncio.Lock` 的写串行化依赖单进程，不要加 `--workers`。
 
 ### 步骤 6 · 第一次使用
 
-1. 打开前端（默认 `http://127.0.0.1:5173`，一键启动时端口写在控制台里）
+1. 打开前端（默认 `http://127.0.0.1:5173`，实际端口以 vite 控制台输出为准）
 2. 在登录页**注册**一个账号（`POST /api/v1/auth/register`，注册成功即自动登录）
 3. 「报表管理」页应能看到 **5 张预置报表**（分钟 / 小时 / 日 / 月 / 结构），它们由建库脚本写入
 4. 回到「对话工作台」，选一张报表，直接提问。可以试这几句：
@@ -158,7 +158,6 @@ power_report_agent/
 │   ├── eval/               # 120 题题库 + 代表性评测报告
 │   ├── demo/               # 演示用样例 CSV
 │   └── eval_tools/         # 评测辅助脚本说明与样例
-├── start.bat / start.ps1 / stop.bat / stop.ps1
 ├── README.md
 └── household_power_consumption.txt   # ← 需自己下载后放这里（见步骤 2）
 ```
@@ -264,7 +263,7 @@ flowchart LR
 没跑 `03_init_db.py`，或跑的时候没有原始数据。补齐步骤 2 与 4。
 
 **前端端口起不来，报 `EACCES: permission denied`**
-Windows 会动态保留一批 TCP 端口段（`netsh int ipv4 show excludedportrange protocol=tcp` 可查），落进保留段的端口绑定必失败。`start.bat` 会自动跳过；手动起时避开这些段（`5173` 常被圈进去）。
+Windows 会动态保留一批 TCP 端口段（`netsh int ipv4 show excludedportrange protocol=tcp` 可查），落进保留段的端口绑定必失败，`5173` 常被圈进去。`vite.config.ts` 已设 `strictPort: false`，撞上会自动换一个端口，以控制台输出的真端口为准；要固定端口就自己指定一个不在保留段里的。
 
 **图表区域空白**
 先看后端日志与浏览器 Network 里 `/api/v1/charts` 的返回。服务端图片导出 `GET /api/v1/charts/{id}.png` 因为没装 `kaleido` 会返回 501，属预期行为——前端导出走 `toImage()`，不受影响。
@@ -309,7 +308,7 @@ npm run typecheck && npm run build
 - **未使用 `openai` SDK**，LLM 调用是 `httpx` 直调 OpenAI 兼容端点（`app/core/llm_client.py`）。
 - **未做 Docker 化与公网部署**，按本机 Windows 运行 + 局域网访问构建；后端固定单 worker（SQLite + 进程内锁不适用于多进程）。
 - **未适配移动端**，前端按桌面 1440 宽设计。
-- **`02.data/tmp` 与 `02.data/logs` 属运行期目录**，已被 `.gitignore` 忽略，`start.bat` 会自动创建。
+- **`02.data/tmp` 与 `02.data/logs` 属运行期目录**，已被 `.gitignore` 忽略；需要时由程序自动创建，不必手工准备。
 
 ---
 
