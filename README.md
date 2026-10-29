@@ -94,6 +94,7 @@ power_report_agent/
 │   ├── eval/           # 120 题题库 + 代表性评测报告
 │   ├── demo/           # 演示样例 CSV
 │   └── eval_tools/     # 评测辅助脚本说明
+├── architecture.png    # 架构图（README 引用）
 ├── README.md
 └── household_power_consumption.txt   # 需自己下载后放这里
 ```
@@ -125,17 +126,9 @@ power_report_agent/
 
 ## 四、架构
 
-```mermaid
-flowchart LR
-    A["用户提问"] --> B["槽位解析"]
-    B -->|信息不足| C["澄清卡片"]
-    C --> B
-    B --> D["规划：SQL 或 pandas"]
-    D --> E["执行：白名单 + 沙箱"]
-    E --> F["结果 + 结论（SSE）"]
-```
+![系统架构：用户提问 → 槽位解析（信息不足转澄清卡片）→ 规划 → 执行（Text2SQL / pandas 双路径）→ 结果集 → 图表与中文结论，经 SSE 流式返回](architecture.png)
 
-> 细节：规划阶段二选一（Text2SQL 走 `sqlglot` AST 白名单 / pandas 代码走 AST 预检 + 子进程沙箱 10 s、512 MB、5000 行），结果侧并行产出 Plotly figure JSON 与中文结论，两者共用一条 SSE 流。
+细节：规划阶段二选一（Text2SQL 走 `sqlglot` AST 白名单 / pandas 代码走 AST 预检 + 子进程沙箱 10 s、512 MB、5000 行），结果侧并行产出 Plotly figure JSON 与中文结论，两者共用一条 SSE 流。
 
 编排是 **LangGraph 状态图**（13 节点 + 条件边，含重写环 / 形态自检环 / 澄清环），检查点落 SQLite（`thread_id = 会话编号`）；保留等价的显式 `async` 编排作回退（`ORCHESTRATOR=legacy`）。数据面 `reports.db` 以 `PRAGMA query_only` 只读，控制面 `power_agent.db` 承担用户/会话/审计/评测，写路径用进程内 `asyncio.Lock` 串行化。
 
