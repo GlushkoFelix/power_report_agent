@@ -127,20 +127,20 @@ power_report_agent/
 
 ```mermaid
 flowchart LR
-    U[提问] --> S[槽位解析<br/>规则 + LLM]
-    S -->|缺信息| C[澄清卡片<br/>等待补全]
-    C --> S
-    S --> P[规划<br/>SQL / pandas]
-    P --> Q[Text2SQL<br/>sqlglot 白名单]
-    P --> D[pandas 代码<br/>AST 预检]
-    Q --> DB[(reports.db<br/>只读 207 万行)]
-    D --> SB[子进程沙箱<br/>10s / 512MB / 5000 行]
-    DB --> R[结果集]
-    SB --> R
-    R --> F[Plotly figure JSON]
-    R --> N[中文结论]
-    F --> E[SSE 流式推送]
-    N --> E
+    A["用户提问"] --> B["槽位解析（规则 + LLM）"]
+    B -->|信息不足| C["澄清卡片"]
+    C --> B
+    B --> D["规划：SQL 或 pandas"]
+    D --> E["Text2SQL（sqlglot 白名单）"]
+    D --> F["pandas 代码（AST 预检）"]
+    E --> G["reports.db（只读）"]
+    F --> H["子进程沙箱"]
+    G --> I["结果集"]
+    H --> I
+    I --> J["Plotly figure JSON"]
+    I --> K["中文结论"]
+    J --> L["SSE 流式推送"]
+    K --> L
 ```
 
 编排是 **LangGraph 状态图**（13 节点 + 条件边，含重写环 / 形态自检环 / 澄清环），检查点落 SQLite（`thread_id = 会话编号`）；保留等价的显式 `async` 编排作回退（`ORCHESTRATOR=legacy`）。数据面 `reports.db` 以 `PRAGMA query_only` 只读，控制面 `power_agent.db` 承担用户/会话/审计/评测，写路径用进程内 `asyncio.Lock` 串行化。
